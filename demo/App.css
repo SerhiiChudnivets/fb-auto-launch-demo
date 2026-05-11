@@ -54,3 +54,9 @@
 .app-content {
   padding: 30px 40px;
 }
+
+.app-loading {
+  color: #666;
+  font-size: 14px;
+  padding: 40px 0;
+}
