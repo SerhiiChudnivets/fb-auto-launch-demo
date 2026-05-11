@@ -1,0 +1,212 @@
+.tg-container {
+  background: #1a1a2e;
+  border: 1px solid #2d2d44;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 700px;
+}
+
+.tg-title {
+  color: #e0e0e0;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #2d2d44;
+}
+
+.tg-field {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tg-label {
+  color: #a0a0b8;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.tg-required {
+  color: #ff6b6b;
+}
+
+.tg-input,
+.tg-select {
+  background: #16162a;
+  border: 1px solid #2d2d44;
+  border-radius: 8px;
+  color: #e0e0e0;
+  padding: 10px 12px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.tg-input:focus,
+.tg-select:focus {
+  border-color: #6c63ff;
+}
+
+.tg-select option {
+  background: #16162a;
+  color: #e0e0e0;
+}
+
+.tg-select-inline {
+  flex: 1;
+  min-width: 0;
+}
+
+.tg-error {
+  color: #ff6b6b;
+  font-size: 12px;
+}
+
+.tg-tree {
+  margin-top: 20px;
+  border: 1px solid #2d2d44;
+  border-radius: 10px;
+  padding: 16px;
+  background: #16162a;
+}
+
+.tg-campaign-node {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.tg-node-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+.tg-badge-campaign {
+  background: #2b5ea7;
+  color: #b3d4ff;
+}
+
+.tg-badge-adset {
+  background: #7c3aed;
+  color: #ddd6fe;
+}
+
+.tg-badge-ad {
+  background: #0d9488;
+  color: #ccfbf1;
+}
+
+.tg-node-name {
+  color: #e0e0e0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.tg-adsets {
+  padding-left: 24px;
+  border-left: 2px solid #2d2d44;
+}
+
+.tg-adset-block {
+  margin-bottom: 16px;
+  background: #1a1a2e;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.tg-adset-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tg-ads {
+  padding-left: 24px;
+  margin-top: 10px;
+  border-left: 2px solid #2d2d44;
+}
+
+.tg-ad-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.tg-remove-btn {
+  background: transparent;
+  border: 1px solid #4a4a5e;
+  border-radius: 6px;
+  color: #ff6b6b;
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.tg-remove-btn:hover {
+  background: #ff6b6b;
+  color: #fff;
+  border-color: #ff6b6b;
+}
+
+.tg-add-btn {
+  background: transparent;
+  border: 1px dashed #4a4a5e;
+  border-radius: 8px;
+  color: #6c63ff;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 8px;
+}
+
+.tg-add-btn:hover {
+  border-color: #6c63ff;
+  background: rgba(108, 99, 255, 0.1);
+}
+
+.tg-add-btn--small {
+  padding: 5px 12px;
+  font-size: 12px;
+}
+
+.tg-load-btn,
+.tg-save-btn {
+  background: #6c63ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.tg-load-btn:hover:not(:disabled),
+.tg-save-btn:hover:not(:disabled) {
+  background: #5a52e0;
+}
+
+.tg-load-btn:disabled,
+.tg-save-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

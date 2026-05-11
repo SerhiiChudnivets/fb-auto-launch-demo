@@ -1,0 +1,138 @@
+.df-container {
+  background: #1a1a2e;
+  border: 1px solid #2d2d44;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 600px;
+}
+
+.df-title {
+  color: #e0e0e0;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #2d2d44;
+}
+
+.df-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.df-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.df-label {
+  color: #a0a0b8;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.df-required {
+  color: #ff6b6b;
+  margin-left: 3px;
+}
+
+.df-input,
+.df-select {
+  background: #16162a;
+  border: 1px solid #2d2d44;
+  border-radius: 8px;
+  color: #e0e0e0;
+  padding: 10px 12px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.df-input:focus,
+.df-select:focus {
+  border-color: #6c63ff;
+}
+
+.df-input::placeholder {
+  color: #555;
+}
+
+.df-select option {
+  background: #16162a;
+  color: #e0e0e0;
+}
+
+.df-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.df-checkbox-text {
+  color: #a0a0b8;
+  font-size: 14px;
+}
+
+.df-chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.df-chip {
+  background: #16162a;
+  border: 1px solid #2d2d44;
+  border-radius: 20px;
+  color: #a0a0b8;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.df-chip:hover {
+  border-color: #6c63ff;
+  color: #e0e0e0;
+}
+
+.df-chip--selected {
+  background: #6c63ff;
+  border-color: #6c63ff;
+  color: #fff;
+}
+
+.df-chip--selected:hover {
+  background: #5a52e0;
+}
+
+.df-error {
+  color: #ff6b6b;
+  font-size: 12px;
+}
+
+.df-save-btn {
+  margin-top: 20px;
+  background: #6c63ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+}
+
+.df-save-btn:hover:not(:disabled) {
+  background: #5a52e0;
+}
+
+.df-save-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,0 +1,56 @@
+.app {
+  min-height: 100vh;
+  background: #0f0f1a;
+  color: #e0e0e0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.app-header {
+  padding: 32px 40px 0;
+}
+
+.app-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.app-subtitle {
+  color: #666;
+  font-size: 14px;
+  margin: 4px 0 0;
+}
+
+.app-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 20px 40px 0;
+  border-bottom: 1px solid #2d2d44;
+}
+
+.app-tab {
+  background: transparent;
+  border: none;
+  color: #666;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  margin-bottom: -1px;
+}
+
+.app-tab:hover {
+  color: #a0a0b8;
+}
+
+.app-tab--active {
+  color: #6c63ff;
+  border-bottom-color: #6c63ff;
+}
+
+.app-content {
+  padding: 30px 40px;
+}
