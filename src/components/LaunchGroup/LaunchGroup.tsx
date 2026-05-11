@@ -55,7 +55,6 @@ function filterOptionsByDependency(
   return field.options.filter((opt) => {
     if (!opt.value || typeof opt.value !== 'object') return true;
     const val = opt.value as Record<string, unknown>;
-
     for (const key of Object.keys(val)) {
       if (key === 'id') continue;
       if (key.endsWith('_ids') && Array.isArray(val[key])) {
@@ -72,22 +71,17 @@ function filterOptionsByDependency(
 function getInheritedValues(
   state: LaunchState,
   path: NodePath,
-  campaignFields: FormField[],
-  adsetFields: FormField[],
 ): NodeValues {
   const inherited: NodeValues = {};
-  const campVals = state.campaignValues[path.groupIndex] ?? {};
-  Object.assign(inherited, campVals);
-
+  Object.assign(inherited, state.campaignValues[path.groupIndex] ?? {});
   if ((path.level === 'adset' || path.level === 'ad') && path.adsetIndex !== undefined) {
-    const adsetVals = state.adsetValues[path.groupIndex]?.[path.adsetIndex] ?? {};
-    Object.assign(inherited, adsetVals);
+    Object.assign(inherited, state.adsetValues[path.groupIndex]?.[path.adsetIndex] ?? {});
   }
-
-  void campaignFields;
-  void adsetFields;
-
   return inherited;
+}
+
+function hasFilled(vals: NodeValues): boolean {
+  return Object.values(vals).some((v) => v !== '' && v !== undefined && v !== null);
 }
 
 export function LaunchGroup({
@@ -117,13 +111,14 @@ export function LaunchGroup({
       setCampaignFields(cFields);
       setAdsetFields(asFields);
       setAdFields(aFields);
-
-      const campaignValues = groups.map(() => ({} as NodeValues));
-      const adsetValues = groups.map((g) => g.adset_templates.map(() => ({} as NodeValues)));
-      const adValues = groups.map((g) =>
-        g.adset_templates.map((as) => as.ad_templates.map(() => ({} as NodeValues))),
-      );
-      setLaunchState({ groups, campaignValues, adsetValues, adValues });
+      setLaunchState({
+        groups,
+        campaignValues: groups.map(() => ({})),
+        adsetValues: groups.map((g) => g.adset_templates.map(() => ({}))),
+        adValues: groups.map((g) =>
+          g.adset_templates.map((as) => as.ad_templates.map(() => ({}))),
+        ),
+      });
     } finally {
       setLoading(false);
     }
@@ -150,17 +145,9 @@ export function LaunchGroup({
           s.adIndex === path.adIndex &&
           s.level === path.level,
       );
-      if (exists) {
-        return prev.filter(
-          (s) =>
-            !(
-              s.groupIndex === path.groupIndex &&
-              s.adsetIndex === path.adsetIndex &&
-              s.adIndex === path.adIndex &&
-              s.level === path.level
-            ),
-        );
-      }
+      if (exists) return prev.filter(
+        (s) => !(s.groupIndex === path.groupIndex && s.adsetIndex === path.adsetIndex && s.adIndex === path.adIndex && s.level === path.level),
+      );
       return [...prev, path];
     });
   }, []);
@@ -170,13 +157,9 @@ export function LaunchGroup({
       if (!launchState) return;
       const allPaths: NodePath[] = [];
       launchState.groups.forEach((group, gi) => {
-        if (level === 'campaign') {
-          allPaths.push({ groupIndex: gi, level: 'campaign' });
-        }
+        if (level === 'campaign') allPaths.push({ groupIndex: gi, level: 'campaign' });
         group.adset_templates.forEach((_, asi) => {
-          if (level === 'adset') {
-            allPaths.push({ groupIndex: gi, adsetIndex: asi, level: 'adset' });
-          }
+          if (level === 'adset') allPaths.push({ groupIndex: gi, adsetIndex: asi, level: 'adset' });
           if (level === 'ad') {
             group.adset_templates[asi].ad_templates.forEach((_, adi) => {
               allPaths.push({ groupIndex: gi, adsetIndex: asi, adIndex: adi, level: 'ad' });
@@ -184,22 +167,12 @@ export function LaunchGroup({
           }
         });
       });
-
       setSelectedNodes((prev) => {
         const allSelected = allPaths.every((p) =>
-          prev.some(
-            (s) =>
-              s.groupIndex === p.groupIndex &&
-              s.adsetIndex === p.adsetIndex &&
-              s.adIndex === p.adIndex &&
-              s.level === p.level,
-          ),
+          prev.some((s) => s.groupIndex === p.groupIndex && s.adsetIndex === p.adsetIndex && s.adIndex === p.adIndex && s.level === p.level),
         );
-        if (allSelected) {
-          return prev.filter((s) => s.level !== level);
-        }
-        const otherLevel = prev.filter((s) => s.level !== level);
-        return [...otherLevel, ...allPaths];
+        if (allSelected) return prev.filter((s) => s.level !== level);
+        return [...prev.filter((s) => s.level !== level), ...allPaths];
       });
     },
     [launchState],
@@ -210,51 +183,24 @@ export function LaunchGroup({
       if (!launchState) return;
       setLaunchState((prev) => {
         if (!prev) return prev;
-        const next = { ...prev };
-        const newCampaignValues = next.campaignValues.map((v) => ({ ...v }));
-        const newAdsetValues = next.adsetValues.map((g) => g.map((v) => ({ ...v })));
-        const newAdValues = next.adValues.map((g) => g.map((as) => as.map((v) => ({ ...v }))));
+        const newCV = prev.campaignValues.map((v) => ({ ...v }));
+        const newAV = prev.adsetValues.map((g) => g.map((v) => ({ ...v })));
+        const newAdV = prev.adValues.map((g) => g.map((as) => as.map((v) => ({ ...v }))));
 
         for (const node of selectedNodes) {
           if (node.level === 'campaign') {
-            newCampaignValues[node.groupIndex][fieldName] = value;
-            const dependentCampaignFields = campaignFields.filter((f) => f.depend_on === fieldName);
-            dependentCampaignFields.forEach((f) => {
-              newCampaignValues[node.groupIndex][f.name] = '';
-            });
-            const dependentAdsetFields = adsetFields.filter((f) => f.depend_on === fieldName);
-            dependentAdsetFields.forEach((f) => {
-              newAdsetValues[node.groupIndex].forEach((v) => {
-                v[f.name] = '';
-              });
-            });
-            const dependentAdFields = adFields.filter((f) => f.depend_on === fieldName);
-            dependentAdFields.forEach((f) => {
-              newAdValues[node.groupIndex].forEach((as) => {
-                as.forEach((v) => {
-                  v[f.name] = '';
-                });
-              });
-            });
+            newCV[node.groupIndex][fieldName] = value;
+            campaignFields.filter((f) => f.depend_on === fieldName).forEach((f) => { newCV[node.groupIndex][f.name] = ''; });
+            adsetFields.filter((f) => f.depend_on === fieldName).forEach((f) => { newAV[node.groupIndex].forEach((v) => { v[f.name] = ''; }); });
+            adFields.filter((f) => f.depend_on === fieldName).forEach((f) => { newAdV[node.groupIndex].forEach((as) => { as.forEach((v) => { v[f.name] = ''; }); }); });
           } else if (node.level === 'adset' && node.adsetIndex !== undefined) {
-            newAdsetValues[node.groupIndex][node.adsetIndex][fieldName] = value;
-            const dependentFields = [...adsetFields, ...adFields].filter((f) => f.depend_on === fieldName);
-            dependentFields.forEach((f) => {
-              if (adsetFields.includes(f)) {
-                newAdsetValues[node.groupIndex][node.adsetIndex!][f.name] = '';
-              }
-            });
+            newAV[node.groupIndex][node.adsetIndex][fieldName] = value;
+            adsetFields.filter((f) => f.depend_on === fieldName).forEach((f) => { newAV[node.groupIndex][node.adsetIndex!][f.name] = ''; });
           } else if (node.level === 'ad' && node.adsetIndex !== undefined && node.adIndex !== undefined) {
-            newAdValues[node.groupIndex][node.adsetIndex][node.adIndex][fieldName] = value;
+            newAdV[node.groupIndex][node.adsetIndex][node.adIndex][fieldName] = value;
           }
         }
-
-        return {
-          ...next,
-          campaignValues: newCampaignValues,
-          adsetValues: newAdsetValues,
-          adValues: newAdValues,
-        };
+        return { ...prev, campaignValues: newCV, adsetValues: newAV, adValues: newAdV };
       });
     },
     [launchState, selectedNodes, campaignFields, adsetFields, adFields],
@@ -263,8 +209,7 @@ export function LaunchGroup({
   const activeLevel = useMemo(() => {
     if (selectedNodes.length === 0) return null;
     const levels = new Set(selectedNodes.map((n) => n.level));
-    if (levels.size === 1) return [...levels][0];
-    return null;
+    return levels.size === 1 ? [...levels][0] : null;
   }, [selectedNodes]);
 
   const activeFields = useMemo(() => {
@@ -274,26 +219,24 @@ export function LaunchGroup({
     return [];
   }, [activeLevel, campaignFields, adsetFields, adFields]);
 
-  const allFieldsForDependency = useMemo(
+  const allFieldsForDep = useMemo(
     () => [...campaignFields, ...adsetFields, ...adFields],
     [campaignFields, adsetFields, adFields],
   );
 
   const firstSelectedValues = useMemo(() => {
     if (!launchState || selectedNodes.length === 0) return {};
-    const first = selectedNodes[0];
-    if (first.level === 'campaign') return launchState.campaignValues[first.groupIndex] ?? {};
-    if (first.level === 'adset' && first.adsetIndex !== undefined)
-      return launchState.adsetValues[first.groupIndex]?.[first.adsetIndex] ?? {};
-    if (first.level === 'ad' && first.adsetIndex !== undefined && first.adIndex !== undefined)
-      return launchState.adValues[first.groupIndex]?.[first.adsetIndex]?.[first.adIndex] ?? {};
+    const f = selectedNodes[0];
+    if (f.level === 'campaign') return launchState.campaignValues[f.groupIndex] ?? {};
+    if (f.level === 'adset' && f.adsetIndex !== undefined) return launchState.adsetValues[f.groupIndex]?.[f.adsetIndex] ?? {};
+    if (f.level === 'ad' && f.adsetIndex !== undefined && f.adIndex !== undefined) return launchState.adValues[f.groupIndex]?.[f.adsetIndex]?.[f.adIndex] ?? {};
     return {};
   }, [launchState, selectedNodes]);
 
   const firstSelectedInherited = useMemo(() => {
     if (!launchState || selectedNodes.length === 0) return {};
-    return getInheritedValues(launchState, selectedNodes[0], campaignFields, adsetFields);
-  }, [launchState, selectedNodes, campaignFields, adsetFields]);
+    return getInheritedValues(launchState, selectedNodes[0]);
+  }, [launchState, selectedNodes]);
 
   const handleSave = async () => {
     if (!launchState) return;
@@ -328,231 +271,189 @@ export function LaunchGroup({
     );
   }
 
+  const renderForm = () => {
+    if (selectedNodes.length === 0) return (
+      <div className="lg-form-panel lg-form-panel--empty">
+        <span className="lg-placeholder">Select one or more nodes to edit their parameters</span>
+      </div>
+    );
+    if (!activeLevel) return (
+      <div className="lg-form-panel lg-form-panel--empty">
+        <span className="lg-placeholder">Select nodes of the same level to bulk edit</span>
+      </div>
+    );
+    return (
+      <div className="lg-form-panel">
+        <div className="lg-form-header">
+          Editing {selectedNodes.length} {activeLevel}(s)
+        </div>
+        <div className="lg-form-fields">
+          {activeFields.map((field) => {
+            const value = firstSelectedValues[field.name] ?? '';
+            const filtered = filterOptionsByDependency(field, allFieldsForDep, firstSelectedValues, firstSelectedInherited);
+            return (
+              <div key={field.name} className="lg-field">
+                <label className="lg-label">
+                  {field.label}
+                  {field.is_required && <span className="lg-required">*</span>}
+                  {field.depend_on && <span className="lg-depend-tag">depends on: {field.depend_on}</span>}
+                </label>
+                {field.value_type === 'BOOLEAN' ? (
+                  <label className="lg-checkbox-label">
+                    <input type="checkbox" checked={Boolean(value)} onChange={(e) => updateValue(field.name, e.target.checked)} />
+                    <span>{field.label}</span>
+                  </label>
+                ) : field.value_type === 'DATETIME' ? (
+                  <input type="datetime-local" className="lg-input" value={String(value || '')} onChange={(e) => updateValue(field.name, e.target.value)} />
+                ) : field.value_type === 'ARRAY' && filtered.length > 0 ? (
+                  <div className="lg-chips">
+                    {filtered.map((opt) => {
+                      const ov = typeof opt.value === 'object' ? String(resolveOptionId(opt.value)) : String(opt.value);
+                      const arr = Array.isArray(value) ? (value as (string | number)[]) : [];
+                      const sel = arr.map(String).includes(ov);
+                      return (
+                        <button key={ov} type="button" className={`lg-chip ${sel ? 'lg-chip--selected' : ''}`}
+                          onClick={() => updateValue(field.name, sel ? arr.filter((v) => String(v) !== ov) : [...arr, opt.value as string | number])}>
+                          {opt.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : filtered.length > 0 ? (
+                  <select className="lg-select" value={String(value ?? '')} onChange={(e) => updateValue(field.name, e.target.value)}>
+                    <option value="">— Select —</option>
+                    {filtered.map((opt) => {
+                      const ov = typeof opt.value === 'object' ? String(resolveOptionId(opt.value)) : String(opt.value ?? '');
+                      return <option key={ov} value={ov}>{opt.label}</option>;
+                    })}
+                  </select>
+                ) : field.options && field.depend_on ? (
+                  <select className="lg-select" disabled><option>— Select parent first —</option></select>
+                ) : (
+                  <input
+                    type={['INTEGER', 'BIGINT', 'FLOAT', 'DOUBLE PRECISION'].includes(field.value_type) ? 'number' : 'text'}
+                    className="lg-input" value={String(value ?? '')} onChange={(e) => updateValue(field.name, e.target.value)} placeholder={field.label}
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
+        <button className="lg-form-save-btn" onClick={handleSave} disabled={saving}>
+          {saving ? 'Saving...' : 'Save'}
+        </button>
+      </div>
+    );
+  };
+
   return (
     <div className="lg-container">
       <div className="lg-header">
         <h3 className="lg-title">Launch Groups</h3>
         <div className="lg-select-all-bar">
-          <button
-            className={`lg-select-all-btn ${activeLevel === 'campaign' ? 'lg-select-all-btn--active' : ''}`}
-            onClick={() => selectAllOfLevel('campaign')}
-          >
+          <button className={`lg-select-all-btn ${activeLevel === 'campaign' ? 'lg-select-all-btn--active' : ''}`} onClick={() => selectAllOfLevel('campaign')}>
             Select All Campaigns
           </button>
-          <button
-            className={`lg-select-all-btn ${activeLevel === 'adset' ? 'lg-select-all-btn--active' : ''}`}
-            onClick={() => selectAllOfLevel('adset')}
-          >
+          <button className={`lg-select-all-btn ${activeLevel === 'adset' ? 'lg-select-all-btn--active' : ''}`} onClick={() => selectAllOfLevel('adset')}>
             Select All Ad Sets
           </button>
-          <button
-            className={`lg-select-all-btn ${activeLevel === 'ad' ? 'lg-select-all-btn--active' : ''}`}
-            onClick={() => selectAllOfLevel('ad')}
-          >
+          <button className={`lg-select-all-btn ${activeLevel === 'ad' ? 'lg-select-all-btn--active' : ''}`} onClick={() => selectAllOfLevel('ad')}>
             Select All Ads
           </button>
           {selectedNodes.length > 0 && (
-            <button className="lg-clear-btn" onClick={() => setSelectedNodes([])}>
-              Clear ({selectedNodes.length})
-            </button>
+            <button className="lg-clear-btn" onClick={() => setSelectedNodes([])}>Clear ({selectedNodes.length})</button>
           )}
         </div>
       </div>
 
-      <div className="lg-layout">
-        <div className="lg-tree-panel">
-          {launchState.groups.map((group, gi) => (
+      {renderForm()}
+
+      <div className="lg-groups-list">
+        {launchState.groups.map((group, gi) => {
+          const totalAds = group.adset_templates.reduce((sum, as) => sum + as.ad_templates.length, 0);
+          const adsetCount = group.adset_templates.length;
+
+          return (
             <div key={gi} className="lg-group-block">
-              <div className="lg-group-name">{group.templates_group_name}</div>
-
-              <div
-                className={`lg-node lg-node-campaign ${isNodeSelected({ groupIndex: gi, level: 'campaign' }) ? 'lg-node--selected' : ''}`}
-                onClick={() => toggleNodeSelection({ groupIndex: gi, level: 'campaign' })}
-              >
-                <span className="lg-badge lg-badge-campaign">Campaign</span>
-                <span className="lg-node-id">Template #{group.campaign_template_id}</span>
-                {Object.keys(launchState.campaignValues[gi] || {}).filter(
-                  (k) => launchState.campaignValues[gi][k] !== '' && launchState.campaignValues[gi][k] !== undefined,
-                ).length > 0 && <span className="lg-filled-indicator" />}
-              </div>
-
-              <div className="lg-adsets-list">
-                {group.adset_templates.map((adset, asi) => (
-                  <div key={asi} className="lg-adset-block">
-                    <div
-                      className={`lg-node lg-node-adset ${isNodeSelected({ groupIndex: gi, adsetIndex: asi, level: 'adset' }) ? 'lg-node--selected' : ''}`}
-                      onClick={() =>
-                        toggleNodeSelection({ groupIndex: gi, adsetIndex: asi, level: 'adset' })
-                      }
-                    >
-                      <span className="lg-badge lg-badge-adset">Ad Set</span>
-                      <span className="lg-node-id">Template #{adset.adset_template_id}</span>
-                      {Object.keys(launchState.adsetValues[gi]?.[asi] || {}).filter(
-                        (k) =>
-                          launchState.adsetValues[gi][asi][k] !== '' &&
-                          launchState.adsetValues[gi][asi][k] !== undefined,
-                      ).length > 0 && <span className="lg-filled-indicator" />}
-                    </div>
-
-                    <div className="lg-ads-list">
-                      {adset.ad_templates.map((ad, adi) => (
-                        <div
-                          key={adi}
-                          className={`lg-node lg-node-ad ${isNodeSelected({ groupIndex: gi, adsetIndex: asi, adIndex: adi, level: 'ad' }) ? 'lg-node--selected' : ''}`}
-                          onClick={() =>
-                            toggleNodeSelection({
-                              groupIndex: gi,
-                              adsetIndex: asi,
-                              adIndex: adi,
-                              level: 'ad',
-                            })
-                          }
-                        >
-                          <span className="lg-badge lg-badge-ad">Ad</span>
-                          <span className="lg-node-id">Template #{ad.ad_template_id}</span>
-                          {Object.keys(launchState.adValues[gi]?.[asi]?.[adi] || {}).filter(
-                            (k) =>
-                              launchState.adValues[gi][asi][adi][k] !== '' &&
-                              launchState.adValues[gi][asi][adi][k] !== undefined,
-                          ).length > 0 && <span className="lg-filled-indicator" />}
-                        </div>
-                      ))}
-                    </div>
+              <div className="lg-group-label">{group.templates_group_name}</div>
+              <div className="lg-graph">
+                {/* Campaign */}
+                <div className="lg-col">
+                  <div
+                    className={`lg-block lg-block-campaign ${isNodeSelected({ groupIndex: gi, level: 'campaign' }) ? 'lg-block--selected' : ''}`}
+                    onClick={() => toggleNodeSelection({ groupIndex: gi, level: 'campaign' })}
+                  >
+                    <span className="lg-block-type">Campaign</span>
+                    <span className="lg-block-id">#{group.campaign_template_id}</span>
+                    {hasFilled(launchState.campaignValues[gi]) && <span className="lg-filled-dot" />}
                   </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+                </div>
 
-        <div className="lg-form-panel">
-          {selectedNodes.length === 0 && (
-            <div className="lg-placeholder">
-              Select one or more nodes to edit their parameters
-            </div>
-          )}
+                {/* Connector C → AS */}
+                <div className="lg-conn">
+                  <svg className="lg-conn-svg" preserveAspectRatio="none">
+                    {group.adset_templates.map((_, asi) => (
+                      <line key={asi} className="lg-conn-line"
+                        x1="0" y1="50%"
+                        x2="100%" y2={`${adsetCount === 1 ? 50 : (asi / (adsetCount - 1)) * 100}%`}
+                      />
+                    ))}
+                  </svg>
+                </div>
 
-          {selectedNodes.length > 0 && !activeLevel && (
-            <div className="lg-placeholder">
-              Select nodes of the same level to bulk edit
-            </div>
-          )}
-
-          {activeLevel && activeFields.length > 0 && (
-            <div className="lg-form">
-              <div className="lg-form-header">
-                Editing {selectedNodes.length} {activeLevel}(s)
-              </div>
-              <div className="lg-form-fields">
-                {activeFields.map((field) => {
-                  const value = firstSelectedValues[field.name] ?? '';
-                  const filteredOptions = filterOptionsByDependency(
-                    field,
-                    allFieldsForDependency,
-                    firstSelectedValues,
-                    firstSelectedInherited,
-                  );
-
-                  return (
-                    <div key={field.name} className="lg-field">
-                      <label className="lg-label">
-                        {field.label}
-                        {field.is_required && <span className="lg-required">*</span>}
-                        {field.depend_on && (
-                          <span className="lg-depend-tag">depends on: {field.depend_on}</span>
-                        )}
-                      </label>
-
-                      {field.value_type === 'BOOLEAN' ? (
-                        <label className="lg-checkbox-label">
-                          <input
-                            type="checkbox"
-                            checked={Boolean(value)}
-                            onChange={(e) => updateValue(field.name, e.target.checked)}
-                          />
-                          <span>{field.label}</span>
-                        </label>
-                      ) : field.value_type === 'DATETIME' ? (
-                        <input
-                          type="datetime-local"
-                          className="lg-input"
-                          value={String(value || '')}
-                          onChange={(e) => updateValue(field.name, e.target.value)}
-                        />
-                      ) : field.value_type === 'ARRAY' && filteredOptions.length > 0 ? (
-                        <div className="lg-chips">
-                          {filteredOptions.map((opt) => {
-                            const optVal =
-                              typeof opt.value === 'object'
-                                ? String(resolveOptionId(opt.value))
-                                : String(opt.value);
-                            const arr = Array.isArray(value) ? (value as (string | number)[]) : [];
-                            const isSelected = arr.map(String).includes(optVal);
-                            return (
-                              <button
-                                key={optVal}
-                                type="button"
-                                className={`lg-chip ${isSelected ? 'lg-chip--selected' : ''}`}
-                                onClick={() => {
-                                  const newArr = isSelected
-                                    ? arr.filter((v) => String(v) !== optVal)
-                                    : [...arr, opt.value as string | number];
-                                  updateValue(field.name, newArr);
-                                }}
-                              >
-                                {opt.label}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      ) : filteredOptions.length > 0 ? (
-                        <select
-                          className="lg-select"
-                          value={String(value ?? '')}
-                          onChange={(e) => updateValue(field.name, e.target.value)}
-                        >
-                          <option value="">— Select —</option>
-                          {filteredOptions.map((opt) => {
-                            const optVal =
-                              typeof opt.value === 'object'
-                                ? String(resolveOptionId(opt.value))
-                                : String(opt.value ?? '');
-                            return (
-                              <option key={optVal} value={optVal}>
-                                {opt.label}
-                              </option>
-                            );
-                          })}
-                        </select>
-                      ) : field.options && field.depend_on ? (
-                        <select className="lg-select" disabled>
-                          <option>— Select parent first —</option>
-                        </select>
-                      ) : (
-                        <input
-                          type={
-                            ['INTEGER', 'BIGINT', 'FLOAT', 'DOUBLE PRECISION'].includes(field.value_type)
-                              ? 'number'
-                              : 'text'
-                          }
-                          className="lg-input"
-                          value={String(value ?? '')}
-                          onChange={(e) => updateValue(field.name, e.target.value)}
-                          placeholder={field.label}
-                        />
-                      )}
+                {/* Adsets */}
+                <div className="lg-col">
+                  {group.adset_templates.map((adset, asi) => (
+                    <div
+                      key={asi}
+                      className={`lg-block lg-block-adset ${isNodeSelected({ groupIndex: gi, adsetIndex: asi, level: 'adset' }) ? 'lg-block--selected' : ''}`}
+                      onClick={() => toggleNodeSelection({ groupIndex: gi, adsetIndex: asi, level: 'adset' })}
+                    >
+                      <span className="lg-block-type">Adset</span>
+                      <span className="lg-block-id">#{adset.adset_template_id}</span>
+                      {hasFilled(launchState.adsetValues[gi]?.[asi] ?? {}) && <span className="lg-filled-dot" />}
                     </div>
-                  );
-                })}
+                  ))}
+                </div>
+
+                {/* Connector AS → AD */}
+                <div className="lg-conn">
+                  <svg className="lg-conn-svg" preserveAspectRatio="none">
+                    {(() => {
+                      let adGlobal = 0;
+                      return group.adset_templates.map((adset, asi) => {
+                        const asY = adsetCount === 1 ? 50 : (asi / (adsetCount - 1)) * 100;
+                        return adset.ad_templates.map((_, adi) => {
+                          const adY = totalAds === 1 ? 50 : (adGlobal / (totalAds - 1)) * 100;
+                          adGlobal++;
+                          return <line key={`${asi}-${adi}`} className="lg-conn-line" x1="0" y1={`${asY}%`} x2="100%" y2={`${adY}%`} />;
+                        });
+                      });
+                    })()}
+                  </svg>
+                </div>
+
+                {/* Ads */}
+                <div className="lg-col">
+                  {group.adset_templates.map((adset, asi) =>
+                    adset.ad_templates.map((ad, adi) => (
+                      <div
+                        key={`${asi}-${adi}`}
+                        className={`lg-block lg-block-ad ${isNodeSelected({ groupIndex: gi, adsetIndex: asi, adIndex: adi, level: 'ad' }) ? 'lg-block--selected' : ''}`}
+                        onClick={() => toggleNodeSelection({ groupIndex: gi, adsetIndex: asi, adIndex: adi, level: 'ad' })}
+                      >
+                        <span className="lg-block-type">Ad</span>
+                        <span className="lg-block-id">#{ad.ad_template_id}</span>
+                        {hasFilled(launchState.adValues[gi]?.[asi]?.[adi] ?? {}) && <span className="lg-filled-dot" />}
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             </div>
-          )}
-        </div>
+          );
+        })}
       </div>
-
-      <button className="lg-save-btn" onClick={handleSave} disabled={saving}>
-        {saving ? 'Saving...' : 'Save All Launch Groups'}
-      </button>
     </div>
   );
 }

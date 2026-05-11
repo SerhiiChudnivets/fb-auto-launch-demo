@@ -119,7 +119,7 @@ export function TemplateGroup({ fetchTemplates, onSave }: TemplateGroupProps) {
   };
 
   const getTemplateName = (list: TemplateInfo[] | undefined, id: number | null) =>
-    list?.find((t) => t.id === id)?.name ?? '';
+    list?.find((t) => t.id === id)?.name ?? '—';
 
   if (!templates) {
     return (
@@ -135,105 +135,164 @@ export function TemplateGroup({ fetchTemplates, onSave }: TemplateGroupProps) {
     <div className="tg-container">
       <h3 className="tg-title">Template Group</h3>
 
-      <div className="tg-field">
-        <label className="tg-label">
-          Group Name <span className="tg-required">*</span>
-        </label>
-        <input
-          className="tg-input"
-          value={groupName}
-          onChange={(e) => setGroupName(e.target.value)}
-          placeholder="Enter group name"
-        />
-        {errors.groupName && <span className="tg-error">{errors.groupName}</span>}
-      </div>
+      <div className="tg-controls">
+        <div className="tg-field">
+          <label className="tg-label">
+            Group Name <span className="tg-required">*</span>
+          </label>
+          <input
+            className="tg-input"
+            value={groupName}
+            onChange={(e) => setGroupName(e.target.value)}
+            placeholder="Enter group name"
+          />
+          {errors.groupName && <span className="tg-error">{errors.groupName}</span>}
+        </div>
 
-      <div className="tg-field">
-        <label className="tg-label">
-          Campaign Template <span className="tg-required">*</span>
-        </label>
-        <select
-          className="tg-select"
-          value={campaignTemplateId ?? ''}
-          onChange={(e) => setCampaignTemplateId(Number(e.target.value))}
-        >
-          <option value="">— Select Campaign —</option>
-          {templates.campaign_templates.map((t) => (
-            <option key={t.id} value={t.id}>
-              {t.name}
-            </option>
-          ))}
-        </select>
-        {errors.campaign && <span className="tg-error">{errors.campaign}</span>}
+        <div className="tg-field">
+          <label className="tg-label">
+            Campaign Template <span className="tg-required">*</span>
+          </label>
+          <select
+            className="tg-select"
+            value={campaignTemplateId ?? ''}
+            onChange={(e) => setCampaignTemplateId(Number(e.target.value))}
+          >
+            <option value="">— Select Campaign —</option>
+            {templates.campaign_templates.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.name}
+              </option>
+            ))}
+          </select>
+          {errors.campaign && <span className="tg-error">{errors.campaign}</span>}
+        </div>
       </div>
 
       {campaignTemplateId && (
-        <div className="tg-tree">
-          <div className="tg-campaign-node">
-            <span className="tg-node-badge tg-badge-campaign">Campaign</span>
-            <span className="tg-node-name">{getTemplateName(templates.campaign_templates, campaignTemplateId)}</span>
-          </div>
-
-          <div className="tg-adsets">
-            {adsetNodes.map((adsetNode, adsetIdx) => (
-              <div key={adsetIdx} className="tg-adset-block">
-                <div className="tg-adset-header">
-                  <span className="tg-node-badge tg-badge-adset">Ad Set #{adsetIdx + 1}</span>
-                  <select
-                    className="tg-select tg-select-inline"
-                    value={adsetNode.templateId ?? ''}
-                    onChange={(e) => updateAdsetTemplate(adsetIdx, Number(e.target.value))}
-                  >
-                    <option value="">— Select Adset —</option>
-                    {templates.adset_templates.map((t) => (
-                      <option key={t.id} value={t.id}>
-                        {t.name}
-                      </option>
-                    ))}
-                  </select>
-                  <button className="tg-remove-btn" onClick={() => removeAdset(adsetIdx)} title="Remove Ad Set">
-                    ✕
-                  </button>
-                </div>
-                {errors[`adset_${adsetIdx}`] && <span className="tg-error">{errors[`adset_${adsetIdx}`]}</span>}
-
-                <div className="tg-ads">
-                  {adsetNode.adTemplateIds.map((adId, adIdx) => (
-                    <div key={adIdx} className="tg-ad-row">
-                      <span className="tg-node-badge tg-badge-ad">Ad #{adIdx + 1}</span>
-                      <select
-                        className="tg-select tg-select-inline"
-                        value={adId ?? ''}
-                        onChange={(e) => updateAdTemplate(adsetIdx, adIdx, Number(e.target.value))}
-                      >
-                        <option value="">— Select Ad —</option>
-                        {templates.ad_templates.map((t) => (
-                          <option key={t.id} value={t.id}>
-                            {t.name}
-                          </option>
-                        ))}
-                      </select>
-                      <button className="tg-remove-btn" onClick={() => removeAdFromAdset(adsetIdx, adIdx)} title="Remove Ad">
-                        ✕
-                      </button>
-                      {errors[`adset_${adsetIdx}_ad_${adIdx}`] && (
-                        <span className="tg-error">{errors[`adset_${adsetIdx}_ad_${adIdx}`]}</span>
-                      )}
-                    </div>
-                  ))}
-                  <button className="tg-add-btn tg-add-btn--small" onClick={() => addAdToAdset(adsetIdx)}>
-                    + Add Ad
-                  </button>
-                  {errors[`adset_${adsetIdx}_ads`] && (
-                    <span className="tg-error">{errors[`adset_${adsetIdx}_ads`]}</span>
-                  )}
-                </div>
+        <div className="tg-graph-area">
+          <div className="tg-graph">
+            {/* Campaign column */}
+            <div className="tg-column tg-col-campaign">
+              <div className="tg-block tg-block-campaign">
+                <div className="tg-block-label">Campaign</div>
+                <div className="tg-block-name">{getTemplateName(templates.campaign_templates, campaignTemplateId)}</div>
               </div>
-            ))}
-            <button className="tg-add-btn" onClick={addAdset}>
-              + Add Ad Set
-            </button>
-            {errors.adsets && <span className="tg-error">{errors.adsets}</span>}
+            </div>
+
+            {/* Connector campaign → adsets */}
+            <div className="tg-connectors">
+              <svg className="tg-svg" preserveAspectRatio="none">
+                {adsetNodes.map((_, adsetIdx) => (
+                  <line
+                    key={`c-as-${adsetIdx}`}
+                    className="tg-connector-line"
+                    x1="0" y1="50%"
+                    x2="100%" y2={`${adsetNodes.length === 1 ? 50 : (adsetIdx / (adsetNodes.length - 1)) * 100}%`}
+                  />
+                ))}
+              </svg>
+            </div>
+
+            {/* Adset column */}
+            <div className="tg-column tg-col-adsets">
+              {adsetNodes.map((adsetNode, adsetIdx) => (
+                <div key={adsetIdx} className="tg-adset-row">
+                  <div className="tg-block tg-block-adset">
+                    <div className="tg-block-header">
+                      <div className="tg-block-label">Adset</div>
+                      <button className="tg-block-remove" onClick={() => removeAdset(adsetIdx)}>✕</button>
+                    </div>
+                    <select
+                      className="tg-block-select"
+                      value={adsetNode.templateId ?? ''}
+                      onChange={(e) => updateAdsetTemplate(adsetIdx, Number(e.target.value))}
+                    >
+                      <option value="">— Select —</option>
+                      {templates.adset_templates.map((t) => (
+                        <option key={t.id} value={t.id}>{t.name}</option>
+                      ))}
+                    </select>
+                    {errors[`adset_${adsetIdx}`] && <span className="tg-error">{errors[`adset_${adsetIdx}`]}</span>}
+                  </div>
+                </div>
+              ))}
+              <button className="tg-add-node-btn" onClick={addAdset}>+ Ad Set</button>
+              {errors.adsets && <span className="tg-error">{errors.adsets}</span>}
+            </div>
+
+            {/* Connector adsets → ads */}
+            <div className="tg-connectors tg-connectors-mid">
+              <svg className="tg-svg" preserveAspectRatio="none">
+                {(() => {
+                  const lines: { adsetIdx: number; adIdx: number }[] = [];
+                  adsetNodes.forEach((n, ai) => n.adTemplateIds.forEach((_, adi) => lines.push({ adsetIdx: ai, adIdx: adi })));
+                  if (lines.length === 0) return null;
+
+                  const totalAdsets = adsetNodes.length || 1;
+                  let adGlobalIdx = 0;
+                  const totalAds = lines.length;
+
+                  return adsetNodes.map((adsetNode, adsetIdx) =>
+                    adsetNode.adTemplateIds.map((_, adIdx) => {
+                      const y1Pct = totalAdsets === 1 ? 50 : (adsetIdx / (totalAdsets - 1)) * 100;
+                      const y2Pct = totalAds === 1 ? 50 : (adGlobalIdx++ / (totalAds - 1)) * 100;
+                      return (
+                        <line
+                          key={`as-ad-${adsetIdx}-${adIdx}`}
+                          className="tg-connector-line"
+                          x1="0" y1={`${y1Pct}%`}
+                          x2="100%" y2={`${y2Pct}%`}
+                        />
+                      );
+                    })
+                  );
+                })()}
+              </svg>
+            </div>
+
+            {/* Ad column */}
+            <div className="tg-column tg-col-ads">
+              {adsetNodes.map((adsetNode, adsetIdx) =>
+                adsetNode.adTemplateIds.map((adId, adIdx) => (
+                  <div key={`${adsetIdx}-${adIdx}`} className="tg-block tg-block-ad">
+                    <div className="tg-block-header">
+                      <div className="tg-block-label">Ad</div>
+                      <button className="tg-block-remove" onClick={() => removeAdFromAdset(adsetIdx, adIdx)}>✕</button>
+                    </div>
+                    <select
+                      className="tg-block-select"
+                      value={adId ?? ''}
+                      onChange={(e) => updateAdTemplate(adsetIdx, adIdx, Number(e.target.value))}
+                    >
+                      <option value="">— Select —</option>
+                      {templates.ad_templates.map((t) => (
+                        <option key={t.id} value={t.id}>{t.name}</option>
+                      ))}
+                    </select>
+                    {errors[`adset_${adsetIdx}_ad_${adIdx}`] && (
+                      <span className="tg-error">{errors[`adset_${adsetIdx}_ad_${adIdx}`]}</span>
+                    )}
+                  </div>
+                ))
+              )}
+              {adsetNodes.length > 0 && (
+                <div className="tg-add-ad-buttons">
+                  {adsetNodes.map((_, adsetIdx) => (
+                    <button
+                      key={adsetIdx}
+                      className="tg-add-node-btn tg-add-node-btn--small"
+                      onClick={() => addAdToAdset(adsetIdx)}
+                    >
+                      + Ad (Set #{adsetIdx + 1})
+                    </button>
+                  ))}
+                </div>
+              )}
+              {adsetNodes.some((_, i) => errors[`adset_${i}_ads`]) && (
+                <span className="tg-error">Each Ad Set needs at least one Ad</span>
+              )}
+            </div>
           </div>
         </div>
       )}

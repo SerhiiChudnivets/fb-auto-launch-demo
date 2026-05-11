@@ -236,161 +236,218 @@ function l({ fetchTemplates: t, onSave: a }) {
 				children: "Template Group"
 			}),
 			/* @__PURE__ */ i("div", {
-				className: "tg-field",
-				children: [
-					/* @__PURE__ */ i("label", {
-						className: "tg-label",
-						children: ["Group Name ", /* @__PURE__ */ r("span", {
-							className: "tg-required",
-							children: "*"
-						})]
-					}),
-					/* @__PURE__ */ r("input", {
-						className: "tg-input",
-						value: c,
-						onChange: (e) => l(e.target.value),
-						placeholder: "Enter group name"
-					}),
-					v.groupName && /* @__PURE__ */ r("span", {
-						className: "tg-error",
-						children: v.groupName
-					})
-				]
-			}),
-			/* @__PURE__ */ i("div", {
-				className: "tg-field",
-				children: [
-					/* @__PURE__ */ i("label", {
-						className: "tg-label",
-						children: ["Campaign Template ", /* @__PURE__ */ r("span", {
-							className: "tg-required",
-							children: "*"
-						})]
-					}),
-					/* @__PURE__ */ i("select", {
-						className: "tg-select",
-						value: u ?? "",
-						onChange: (e) => d(Number(e.target.value)),
-						children: [/* @__PURE__ */ r("option", {
-							value: "",
-							children: "— Select Campaign —"
-						}), o.campaign_templates.map((e) => /* @__PURE__ */ r("option", {
-							value: e.id,
-							children: e.name
-						}, e.id))]
-					}),
-					v.campaign && /* @__PURE__ */ r("span", {
-						className: "tg-error",
-						children: v.campaign
-					})
-				]
-			}),
-			u && /* @__PURE__ */ i("div", {
-				className: "tg-tree",
+				className: "tg-controls",
 				children: [/* @__PURE__ */ i("div", {
-					className: "tg-campaign-node",
-					children: [/* @__PURE__ */ r("span", {
-						className: "tg-node-badge tg-badge-campaign",
-						children: "Campaign"
-					}), /* @__PURE__ */ r("span", {
-						className: "tg-node-name",
-						children: ((e, t) => e?.find((e) => e.id === t)?.name ?? "")(o.campaign_templates, u)
-					})]
-				}), /* @__PURE__ */ i("div", {
-					className: "tg-adsets",
+					className: "tg-field",
 					children: [
-						f.map((e, t) => /* @__PURE__ */ i("div", {
-							className: "tg-adset-block",
+						/* @__PURE__ */ i("label", {
+							className: "tg-label",
+							children: ["Group Name ", /* @__PURE__ */ r("span", {
+								className: "tg-required",
+								children: "*"
+							})]
+						}),
+						/* @__PURE__ */ r("input", {
+							className: "tg-input",
+							value: c,
+							onChange: (e) => l(e.target.value),
+							placeholder: "Enter group name"
+						}),
+						v.groupName && /* @__PURE__ */ r("span", {
+							className: "tg-error",
+							children: v.groupName
+						})
+					]
+				}), /* @__PURE__ */ i("div", {
+					className: "tg-field",
+					children: [
+						/* @__PURE__ */ i("label", {
+							className: "tg-label",
+							children: ["Campaign Template ", /* @__PURE__ */ r("span", {
+								className: "tg-required",
+								children: "*"
+							})]
+						}),
+						/* @__PURE__ */ i("select", {
+							className: "tg-select",
+							value: u ?? "",
+							onChange: (e) => d(Number(e.target.value)),
+							children: [/* @__PURE__ */ r("option", {
+								value: "",
+								children: "— Select Campaign —"
+							}), o.campaign_templates.map((e) => /* @__PURE__ */ r("option", {
+								value: e.id,
+								children: e.name
+							}, e.id))]
+						}),
+						v.campaign && /* @__PURE__ */ r("span", {
+							className: "tg-error",
+							children: v.campaign
+						})
+					]
+				})]
+			}),
+			u && /* @__PURE__ */ r("div", {
+				className: "tg-graph-area",
+				children: /* @__PURE__ */ i("div", {
+					className: "tg-graph",
+					children: [
+						/* @__PURE__ */ r("div", {
+							className: "tg-column tg-col-campaign",
+							children: /* @__PURE__ */ i("div", {
+								className: "tg-block tg-block-campaign",
+								children: [/* @__PURE__ */ r("div", {
+									className: "tg-block-label",
+									children: "Campaign"
+								}), /* @__PURE__ */ r("div", {
+									className: "tg-block-name",
+									children: ((e, t) => e?.find((e) => e.id === t)?.name ?? "—")(o.campaign_templates, u)
+								})]
+							})
+						}),
+						/* @__PURE__ */ r("div", {
+							className: "tg-connectors",
+							children: /* @__PURE__ */ r("svg", {
+								className: "tg-svg",
+								preserveAspectRatio: "none",
+								children: f.map((e, t) => /* @__PURE__ */ r("line", {
+									className: "tg-connector-line",
+									x1: "0",
+									y1: "50%",
+									x2: "100%",
+									y2: `${f.length === 1 ? 50 : t / (f.length - 1) * 100}%`
+								}, `c-as-${t}`))
+							})
+						}),
+						/* @__PURE__ */ i("div", {
+							className: "tg-column tg-col-adsets",
 							children: [
-								/* @__PURE__ */ i("div", {
-									className: "tg-adset-header",
+								f.map((e, t) => /* @__PURE__ */ r("div", {
+									className: "tg-adset-row",
+									children: /* @__PURE__ */ i("div", {
+										className: "tg-block tg-block-adset",
+										children: [
+											/* @__PURE__ */ i("div", {
+												className: "tg-block-header",
+												children: [/* @__PURE__ */ r("div", {
+													className: "tg-block-label",
+													children: "Adset"
+												}), /* @__PURE__ */ r("button", {
+													className: "tg-block-remove",
+													onClick: () => C(t),
+													children: "✕"
+												})]
+											}),
+											/* @__PURE__ */ i("select", {
+												className: "tg-block-select",
+												value: e.templateId ?? "",
+												onChange: (e) => w(t, Number(e.target.value)),
+												children: [/* @__PURE__ */ r("option", {
+													value: "",
+													children: "— Select —"
+												}), o.adset_templates.map((e) => /* @__PURE__ */ r("option", {
+													value: e.id,
+													children: e.name
+												}, e.id))]
+											}),
+											v[`adset_${t}`] && /* @__PURE__ */ r("span", {
+												className: "tg-error",
+												children: v[`adset_${t}`]
+											})
+										]
+									})
+								}, t)),
+								/* @__PURE__ */ r("button", {
+									className: "tg-add-node-btn",
+									onClick: S,
+									children: "+ Ad Set"
+								}),
+								v.adsets && /* @__PURE__ */ r("span", {
+									className: "tg-error",
+									children: v.adsets
+								})
+							]
+						}),
+						/* @__PURE__ */ r("div", {
+							className: "tg-connectors tg-connectors-mid",
+							children: /* @__PURE__ */ r("svg", {
+								className: "tg-svg",
+								preserveAspectRatio: "none",
+								children: (() => {
+									let e = [];
+									if (f.forEach((t, n) => t.adTemplateIds.forEach((t, r) => e.push({
+										adsetIdx: n,
+										adIdx: r
+									}))), e.length === 0) return null;
+									let t = f.length || 1, n = 0, i = e.length;
+									return f.map((e, a) => e.adTemplateIds.map((e, o) => {
+										let s = t === 1 ? 50 : a / (t - 1) * 100, c = i === 1 ? 50 : n++ / (i - 1) * 100;
+										return /* @__PURE__ */ r("line", {
+											className: "tg-connector-line",
+											x1: "0",
+											y1: `${s}%`,
+											x2: "100%",
+											y2: `${c}%`
+										}, `as-ad-${a}-${o}`);
+									}));
+								})()
+							})
+						}),
+						/* @__PURE__ */ i("div", {
+							className: "tg-column tg-col-ads",
+							children: [
+								f.map((e, t) => e.adTemplateIds.map((e, n) => /* @__PURE__ */ i("div", {
+									className: "tg-block tg-block-ad",
 									children: [
-										/* @__PURE__ */ i("span", {
-											className: "tg-node-badge tg-badge-adset",
-											children: ["Ad Set #", t + 1]
+										/* @__PURE__ */ i("div", {
+											className: "tg-block-header",
+											children: [/* @__PURE__ */ r("div", {
+												className: "tg-block-label",
+												children: "Ad"
+											}), /* @__PURE__ */ r("button", {
+												className: "tg-block-remove",
+												onClick: () => E(t, n),
+												children: "✕"
+											})]
 										}),
 										/* @__PURE__ */ i("select", {
-											className: "tg-select tg-select-inline",
-											value: e.templateId ?? "",
-											onChange: (e) => w(t, Number(e.target.value)),
+											className: "tg-block-select",
+											value: e ?? "",
+											onChange: (e) => D(t, n, Number(e.target.value)),
 											children: [/* @__PURE__ */ r("option", {
 												value: "",
-												children: "— Select Adset —"
-											}), o.adset_templates.map((e) => /* @__PURE__ */ r("option", {
+												children: "— Select —"
+											}), o.ad_templates.map((e) => /* @__PURE__ */ r("option", {
 												value: e.id,
 												children: e.name
 											}, e.id))]
 										}),
-										/* @__PURE__ */ r("button", {
-											className: "tg-remove-btn",
-											onClick: () => C(t),
-											title: "Remove Ad Set",
-											children: "✕"
-										})
-									]
-								}),
-								v[`adset_${t}`] && /* @__PURE__ */ r("span", {
-									className: "tg-error",
-									children: v[`adset_${t}`]
-								}),
-								/* @__PURE__ */ i("div", {
-									className: "tg-ads",
-									children: [
-										e.adTemplateIds.map((e, n) => /* @__PURE__ */ i("div", {
-											className: "tg-ad-row",
-											children: [
-												/* @__PURE__ */ i("span", {
-													className: "tg-node-badge tg-badge-ad",
-													children: ["Ad #", n + 1]
-												}),
-												/* @__PURE__ */ i("select", {
-													className: "tg-select tg-select-inline",
-													value: e ?? "",
-													onChange: (e) => D(t, n, Number(e.target.value)),
-													children: [/* @__PURE__ */ r("option", {
-														value: "",
-														children: "— Select Ad —"
-													}), o.ad_templates.map((e) => /* @__PURE__ */ r("option", {
-														value: e.id,
-														children: e.name
-													}, e.id))]
-												}),
-												/* @__PURE__ */ r("button", {
-													className: "tg-remove-btn",
-													onClick: () => E(t, n),
-													title: "Remove Ad",
-													children: "✕"
-												}),
-												v[`adset_${t}_ad_${n}`] && /* @__PURE__ */ r("span", {
-													className: "tg-error",
-													children: v[`adset_${t}_ad_${n}`]
-												})
-											]
-										}, n)),
-										/* @__PURE__ */ r("button", {
-											className: "tg-add-btn tg-add-btn--small",
-											onClick: () => T(t),
-											children: "+ Add Ad"
-										}),
-										v[`adset_${t}_ads`] && /* @__PURE__ */ r("span", {
+										v[`adset_${t}_ad_${n}`] && /* @__PURE__ */ r("span", {
 											className: "tg-error",
-											children: v[`adset_${t}_ads`]
+											children: v[`adset_${t}_ad_${n}`]
 										})
 									]
+								}, `${t}-${n}`))),
+								f.length > 0 && /* @__PURE__ */ r("div", {
+									className: "tg-add-ad-buttons",
+									children: f.map((e, t) => /* @__PURE__ */ i("button", {
+										className: "tg-add-node-btn tg-add-node-btn--small",
+										onClick: () => T(t),
+										children: [
+											"+ Ad (Set #",
+											t + 1,
+											")"
+										]
+									}, t))
+								}),
+								f.some((e, t) => v[`adset_${t}_ads`]) && /* @__PURE__ */ r("span", {
+									className: "tg-error",
+									children: "Each Ad Set needs at least one Ad"
 								})
 							]
-						}, t)),
-						/* @__PURE__ */ r("button", {
-							className: "tg-add-btn",
-							onClick: S,
-							children: "+ Add Ad Set"
-						}),
-						v.adsets && /* @__PURE__ */ r("span", {
-							className: "tg-error",
-							children: v.adsets
 						})
 					]
-				})]
+				})
 			}),
 			/* @__PURE__ */ r("button", {
 				className: "tg-save-btn",
@@ -453,17 +510,16 @@ function d(e, t, n, r) {
 		return !0;
 	});
 }
-function f(e, t, n, r) {
-	let i = {}, a = e.campaignValues[t.groupIndex] ?? {};
-	if (Object.assign(i, a), (t.level === "adset" || t.level === "ad") && t.adsetIndex !== void 0) {
-		let n = e.adsetValues[t.groupIndex]?.[t.adsetIndex] ?? {};
-		Object.assign(i, n);
-	}
-	return i;
+function f(e, t) {
+	let n = {};
+	return Object.assign(n, e.campaignValues[t.groupIndex] ?? {}), (t.level === "adset" || t.level === "ad") && t.adsetIndex !== void 0 && Object.assign(n, e.adsetValues[t.groupIndex]?.[t.adsetIndex] ?? {}), n;
 }
-function p({ fetchTemplateGroups: a, fetchCampaignFields: o, fetchAdsetFields: s, fetchAdFields: c, onSave: l }) {
-	let [p, m] = n(null), [h, g] = n([]), [_, v] = n([]), [y, b] = n([]), [x, S] = n([]), [C, w] = n(!1), [T, E] = n(!1), D = e(async () => {
-		w(!0);
+function p(e) {
+	return Object.values(e).some((e) => e !== "" && e != null);
+}
+function m({ fetchTemplateGroups: a, fetchCampaignFields: o, fetchAdsetFields: s, fetchAdFields: c, onSave: l }) {
+	let [m, h] = n(null), [g, _] = n([]), [v, y] = n([]), [b, x] = n([]), [S, C] = n([]), [w, T] = n(!1), [E, D] = n(!1), O = e(async () => {
+		T(!0);
 		try {
 			let [e, t, n, r] = await Promise.all([
 				a(),
@@ -471,26 +527,26 @@ function p({ fetchTemplateGroups: a, fetchCampaignFields: o, fetchAdsetFields: s
 				s(),
 				c()
 			]);
-			g(t), v(n), b(r), m({
+			_(t), y(n), x(r), h({
 				groups: e,
 				campaignValues: e.map(() => ({})),
 				adsetValues: e.map((e) => e.adset_templates.map(() => ({}))),
 				adValues: e.map((e) => e.adset_templates.map((e) => e.ad_templates.map(() => ({}))))
 			});
 		} finally {
-			w(!1);
+			T(!1);
 		}
 	}, [
 		a,
 		o,
 		s,
 		c
-	]), O = e((e) => x.some((t) => t.groupIndex === e.groupIndex && t.adsetIndex === e.adsetIndex && t.adIndex === e.adIndex && t.level === e.level), [x]), k = e((e) => {
-		S((t) => t.some((t) => t.groupIndex === e.groupIndex && t.adsetIndex === e.adsetIndex && t.adIndex === e.adIndex && t.level === e.level) ? t.filter((t) => !(t.groupIndex === e.groupIndex && t.adsetIndex === e.adsetIndex && t.adIndex === e.adIndex && t.level === e.level)) : [...t, e]);
-	}, []), A = e((e) => {
-		if (!p) return;
+	]), k = e((e) => S.some((t) => t.groupIndex === e.groupIndex && t.adsetIndex === e.adsetIndex && t.adIndex === e.adIndex && t.level === e.level), [S]), A = e((e) => {
+		C((t) => t.some((t) => t.groupIndex === e.groupIndex && t.adsetIndex === e.adsetIndex && t.adIndex === e.adIndex && t.level === e.level) ? t.filter((t) => !(t.groupIndex === e.groupIndex && t.adsetIndex === e.adsetIndex && t.adIndex === e.adIndex && t.level === e.level)) : [...t, e]);
+	}, []), j = e((e) => {
+		if (!m) return;
 		let t = [];
-		p.groups.forEach((n, r) => {
+		m.groups.forEach((n, r) => {
 			e === "campaign" && t.push({
 				groupIndex: r,
 				level: "campaign"
@@ -508,67 +564,62 @@ function p({ fetchTemplateGroups: a, fetchCampaignFields: o, fetchAdsetFields: s
 					});
 				});
 			});
-		}), S((n) => t.every((e) => n.some((t) => t.groupIndex === e.groupIndex && t.adsetIndex === e.adsetIndex && t.adIndex === e.adIndex && t.level === e.level)) ? n.filter((t) => t.level !== e) : [...n.filter((t) => t.level !== e), ...t]);
-	}, [p]), j = e((e, t) => {
-		p && m((n) => {
+		}), C((n) => t.every((e) => n.some((t) => t.groupIndex === e.groupIndex && t.adsetIndex === e.adsetIndex && t.adIndex === e.adIndex && t.level === e.level)) ? n.filter((t) => t.level !== e) : [...n.filter((t) => t.level !== e), ...t]);
+	}, [m]), M = e((e, t) => {
+		m && h((n) => {
 			if (!n) return n;
-			let r = { ...n }, i = r.campaignValues.map((e) => ({ ...e })), a = r.adsetValues.map((e) => e.map((e) => ({ ...e }))), o = r.adValues.map((e) => e.map((e) => e.map((e) => ({ ...e }))));
-			for (let n of x) n.level === "campaign" ? (i[n.groupIndex][e] = t, h.filter((t) => t.depend_on === e).forEach((e) => {
-				i[n.groupIndex][e.name] = "";
-			}), _.filter((t) => t.depend_on === e).forEach((e) => {
-				a[n.groupIndex].forEach((t) => {
+			let r = n.campaignValues.map((e) => ({ ...e })), i = n.adsetValues.map((e) => e.map((e) => ({ ...e }))), a = n.adValues.map((e) => e.map((e) => e.map((e) => ({ ...e }))));
+			for (let n of S) n.level === "campaign" ? (r[n.groupIndex][e] = t, g.filter((t) => t.depend_on === e).forEach((e) => {
+				r[n.groupIndex][e.name] = "";
+			}), v.filter((t) => t.depend_on === e).forEach((e) => {
+				i[n.groupIndex].forEach((t) => {
 					t[e.name] = "";
 				});
-			}), y.filter((t) => t.depend_on === e).forEach((e) => {
-				o[n.groupIndex].forEach((t) => {
+			}), b.filter((t) => t.depend_on === e).forEach((e) => {
+				a[n.groupIndex].forEach((t) => {
 					t.forEach((t) => {
 						t[e.name] = "";
 					});
 				});
-			})) : n.level === "adset" && n.adsetIndex !== void 0 ? (a[n.groupIndex][n.adsetIndex][e] = t, [..._, ...y].filter((t) => t.depend_on === e).forEach((e) => {
-				_.includes(e) && (a[n.groupIndex][n.adsetIndex][e.name] = "");
-			})) : n.level === "ad" && n.adsetIndex !== void 0 && n.adIndex !== void 0 && (o[n.groupIndex][n.adsetIndex][n.adIndex][e] = t);
+			})) : n.level === "adset" && n.adsetIndex !== void 0 ? (i[n.groupIndex][n.adsetIndex][e] = t, v.filter((t) => t.depend_on === e).forEach((e) => {
+				i[n.groupIndex][n.adsetIndex][e.name] = "";
+			})) : n.level === "ad" && n.adsetIndex !== void 0 && n.adIndex !== void 0 && (a[n.groupIndex][n.adsetIndex][n.adIndex][e] = t);
 			return {
-				...r,
-				campaignValues: i,
-				adsetValues: a,
-				adValues: o
+				...n,
+				campaignValues: r,
+				adsetValues: i,
+				adValues: a
 			};
 		});
 	}, [
-		p,
-		x,
-		h,
-		_,
-		y
-	]), M = t(() => {
-		if (x.length === 0) return null;
-		let e = new Set(x.map((e) => e.level));
+		m,
+		S,
+		g,
+		v,
+		b
+	]), N = t(() => {
+		if (S.length === 0) return null;
+		let e = new Set(S.map((e) => e.level));
 		return e.size === 1 ? [...e][0] : null;
-	}, [x]), N = t(() => M === "campaign" ? h : M === "adset" ? _ : M === "ad" ? y : [], [
-		M,
-		h,
-		_,
-		y
-	]), P = t(() => [
-		...h,
-		..._,
-		...y
+	}, [S]), P = t(() => N === "campaign" ? g : N === "adset" ? v : N === "ad" ? b : [], [
+		N,
+		g,
+		v,
+		b
+	]), F = t(() => [
+		...g,
+		...v,
+		...b
 	], [
-		h,
-		_,
-		y
-	]), F = t(() => {
-		if (!p || x.length === 0) return {};
-		let e = x[0];
-		return e.level === "campaign" ? p.campaignValues[e.groupIndex] ?? {} : e.level === "adset" && e.adsetIndex !== void 0 ? p.adsetValues[e.groupIndex]?.[e.adsetIndex] ?? {} : e.level === "ad" && e.adsetIndex !== void 0 && e.adIndex !== void 0 ? p.adValues[e.groupIndex]?.[e.adsetIndex]?.[e.adIndex] ?? {} : {};
-	}, [p, x]), I = t(() => !p || x.length === 0 ? {} : f(p, x[0], h, _), [
-		p,
-		x,
-		h,
-		_
-	]);
-	return p ? /* @__PURE__ */ i("div", {
+		g,
+		v,
+		b
+	]), I = t(() => {
+		if (!m || S.length === 0) return {};
+		let e = S[0];
+		return e.level === "campaign" ? m.campaignValues[e.groupIndex] ?? {} : e.level === "adset" && e.adsetIndex !== void 0 ? m.adsetValues[e.groupIndex]?.[e.adsetIndex] ?? {} : e.level === "ad" && e.adsetIndex !== void 0 && e.adIndex !== void 0 ? m.adValues[e.groupIndex]?.[e.adsetIndex]?.[e.adIndex] ?? {} : {};
+	}, [m, S]), L = t(() => !m || S.length === 0 ? {} : f(m, S[0]), [m, S]);
+	return m ? /* @__PURE__ */ i("div", {
 		className: "lg-container",
 		children: [
 			/* @__PURE__ */ i("div", {
@@ -580,263 +631,303 @@ function p({ fetchTemplateGroups: a, fetchCampaignFields: o, fetchAdsetFields: s
 					className: "lg-select-all-bar",
 					children: [
 						/* @__PURE__ */ r("button", {
-							className: `lg-select-all-btn ${M === "campaign" ? "lg-select-all-btn--active" : ""}`,
-							onClick: () => A("campaign"),
+							className: `lg-select-all-btn ${N === "campaign" ? "lg-select-all-btn--active" : ""}`,
+							onClick: () => j("campaign"),
 							children: "Select All Campaigns"
 						}),
 						/* @__PURE__ */ r("button", {
-							className: `lg-select-all-btn ${M === "adset" ? "lg-select-all-btn--active" : ""}`,
-							onClick: () => A("adset"),
+							className: `lg-select-all-btn ${N === "adset" ? "lg-select-all-btn--active" : ""}`,
+							onClick: () => j("adset"),
 							children: "Select All Ad Sets"
 						}),
 						/* @__PURE__ */ r("button", {
-							className: `lg-select-all-btn ${M === "ad" ? "lg-select-all-btn--active" : ""}`,
-							onClick: () => A("ad"),
+							className: `lg-select-all-btn ${N === "ad" ? "lg-select-all-btn--active" : ""}`,
+							onClick: () => j("ad"),
 							children: "Select All Ads"
 						}),
-						x.length > 0 && /* @__PURE__ */ i("button", {
+						S.length > 0 && /* @__PURE__ */ i("button", {
 							className: "lg-clear-btn",
-							onClick: () => S([]),
+							onClick: () => C([]),
 							children: [
 								"Clear (",
-								x.length,
+								S.length,
 								")"
 							]
 						})
 					]
 				})]
 			}),
-			/* @__PURE__ */ i("div", {
-				className: "lg-layout",
-				children: [/* @__PURE__ */ r("div", {
-					className: "lg-tree-panel",
-					children: p.groups.map((e, t) => /* @__PURE__ */ i("div", {
-						className: "lg-group-block",
+			S.length === 0 ? /* @__PURE__ */ r("div", {
+				className: "lg-form-panel lg-form-panel--empty",
+				children: /* @__PURE__ */ r("span", {
+					className: "lg-placeholder",
+					children: "Select one or more nodes to edit their parameters"
+				})
+			}) : N ? /* @__PURE__ */ i("div", {
+				className: "lg-form-panel",
+				children: [
+					/* @__PURE__ */ i("div", {
+						className: "lg-form-header",
 						children: [
-							/* @__PURE__ */ r("div", {
-								className: "lg-group-name",
-								children: e.templates_group_name
-							}),
-							/* @__PURE__ */ i("div", {
-								className: `lg-node lg-node-campaign ${O({
-									groupIndex: t,
-									level: "campaign"
-								}) ? "lg-node--selected" : ""}`,
-								onClick: () => k({
-									groupIndex: t,
-									level: "campaign"
+							"Editing ",
+							S.length,
+							" ",
+							N,
+							"(s)"
+						]
+					}),
+					/* @__PURE__ */ r("div", {
+						className: "lg-form-fields",
+						children: P.map((e) => {
+							let t = I[e.name] ?? "", n = d(e, F, I, L);
+							return /* @__PURE__ */ i("div", {
+								className: "lg-field",
+								children: [/* @__PURE__ */ i("label", {
+									className: "lg-label",
+									children: [
+										e.label,
+										e.is_required && /* @__PURE__ */ r("span", {
+											className: "lg-required",
+											children: "*"
+										}),
+										e.depend_on && /* @__PURE__ */ i("span", {
+											className: "lg-depend-tag",
+											children: ["depends on: ", e.depend_on]
+										})
+									]
+								}), e.value_type === "BOOLEAN" ? /* @__PURE__ */ i("label", {
+									className: "lg-checkbox-label",
+									children: [/* @__PURE__ */ r("input", {
+										type: "checkbox",
+										checked: !!t,
+										onChange: (t) => M(e.name, t.target.checked)
+									}), /* @__PURE__ */ r("span", { children: e.label })]
+								}) : e.value_type === "DATETIME" ? /* @__PURE__ */ r("input", {
+									type: "datetime-local",
+									className: "lg-input",
+									value: String(t || ""),
+									onChange: (t) => M(e.name, t.target.value)
+								}) : e.value_type === "ARRAY" && n.length > 0 ? /* @__PURE__ */ r("div", {
+									className: "lg-chips",
+									children: n.map((n) => {
+										let i = typeof n.value == "object" ? String(u(n.value)) : String(n.value), a = Array.isArray(t) ? t : [], o = a.map(String).includes(i);
+										return /* @__PURE__ */ r("button", {
+											type: "button",
+											className: `lg-chip ${o ? "lg-chip--selected" : ""}`,
+											onClick: () => M(e.name, o ? a.filter((e) => String(e) !== i) : [...a, n.value]),
+											children: n.label
+										}, i);
+									})
+								}) : n.length > 0 ? /* @__PURE__ */ i("select", {
+									className: "lg-select",
+									value: String(t ?? ""),
+									onChange: (t) => M(e.name, t.target.value),
+									children: [/* @__PURE__ */ r("option", {
+										value: "",
+										children: "— Select —"
+									}), n.map((e) => {
+										let t = typeof e.value == "object" ? String(u(e.value)) : String(e.value ?? "");
+										return /* @__PURE__ */ r("option", {
+											value: t,
+											children: e.label
+										}, t);
+									})]
+								}) : e.options && e.depend_on ? /* @__PURE__ */ r("select", {
+									className: "lg-select",
+									disabled: !0,
+									children: /* @__PURE__ */ r("option", { children: "— Select parent first —" })
+								}) : /* @__PURE__ */ r("input", {
+									type: [
+										"INTEGER",
+										"BIGINT",
+										"FLOAT",
+										"DOUBLE PRECISION"
+									].includes(e.value_type) ? "number" : "text",
+									className: "lg-input",
+									value: String(t ?? ""),
+									onChange: (t) => M(e.name, t.target.value),
+									placeholder: e.label
+								})]
+							}, e.name);
+						})
+					}),
+					/* @__PURE__ */ r("button", {
+						className: "lg-form-save-btn",
+						onClick: async () => {
+							if (m) {
+								D(!0);
+								try {
+									await l(m.groups.map((e, t) => ({
+										templates_group_name: e.templates_group_name,
+										campaign_template_id: e.campaign_template_id,
+										...m.campaignValues[t],
+										adset_templates: e.adset_templates.map((e, n) => ({
+											adset_template_id: e.adset_template_id,
+											...m.adsetValues[t][n],
+											ad_templates: e.ad_templates.map((e, r) => ({
+												ad_template_id: e.ad_template_id,
+												...m.adValues[t][n][r]
+											}))
+										}))
+									})));
+								} finally {
+									D(!1);
+								}
+							}
+						},
+						disabled: E,
+						children: E ? "Saving..." : "Save"
+					})
+				]
+			}) : /* @__PURE__ */ r("div", {
+				className: "lg-form-panel lg-form-panel--empty",
+				children: /* @__PURE__ */ r("span", {
+					className: "lg-placeholder",
+					children: "Select nodes of the same level to bulk edit"
+				})
+			}),
+			/* @__PURE__ */ r("div", {
+				className: "lg-groups-list",
+				children: m.groups.map((e, t) => {
+					let n = e.adset_templates.reduce((e, t) => e + t.ad_templates.length, 0), a = e.adset_templates.length;
+					return /* @__PURE__ */ i("div", {
+						className: "lg-group-block",
+						children: [/* @__PURE__ */ r("div", {
+							className: "lg-group-label",
+							children: e.templates_group_name
+						}), /* @__PURE__ */ i("div", {
+							className: "lg-graph",
+							children: [
+								/* @__PURE__ */ r("div", {
+									className: "lg-col",
+									children: /* @__PURE__ */ i("div", {
+										className: `lg-block lg-block-campaign ${k({
+											groupIndex: t,
+											level: "campaign"
+										}) ? "lg-block--selected" : ""}`,
+										onClick: () => A({
+											groupIndex: t,
+											level: "campaign"
+										}),
+										children: [
+											/* @__PURE__ */ r("span", {
+												className: "lg-block-type",
+												children: "Campaign"
+											}),
+											/* @__PURE__ */ i("span", {
+												className: "lg-block-id",
+												children: ["#", e.campaign_template_id]
+											}),
+											p(m.campaignValues[t]) && /* @__PURE__ */ r("span", { className: "lg-filled-dot" })
+										]
+									})
 								}),
-								children: [
-									/* @__PURE__ */ r("span", {
-										className: "lg-badge lg-badge-campaign",
-										children: "Campaign"
-									}),
-									/* @__PURE__ */ i("span", {
-										className: "lg-node-id",
-										children: ["Template #", e.campaign_template_id]
-									}),
-									Object.keys(p.campaignValues[t] || {}).filter((e) => p.campaignValues[t][e] !== "" && p.campaignValues[t][e] !== void 0).length > 0 && /* @__PURE__ */ r("span", { className: "lg-filled-indicator" })
-								]
-							}),
-							/* @__PURE__ */ r("div", {
-								className: "lg-adsets-list",
-								children: e.adset_templates.map((e, n) => /* @__PURE__ */ i("div", {
-									className: "lg-adset-block",
-									children: [/* @__PURE__ */ i("div", {
-										className: `lg-node lg-node-adset ${O({
+								/* @__PURE__ */ r("div", {
+									className: "lg-conn",
+									children: /* @__PURE__ */ r("svg", {
+										className: "lg-conn-svg",
+										preserveAspectRatio: "none",
+										children: e.adset_templates.map((e, t) => /* @__PURE__ */ r("line", {
+											className: "lg-conn-line",
+											x1: "0",
+											y1: "50%",
+											x2: "100%",
+											y2: `${a === 1 ? 50 : t / (a - 1) * 100}%`
+										}, t))
+									})
+								}),
+								/* @__PURE__ */ r("div", {
+									className: "lg-col",
+									children: e.adset_templates.map((e, n) => /* @__PURE__ */ i("div", {
+										className: `lg-block lg-block-adset ${k({
 											groupIndex: t,
 											adsetIndex: n,
 											level: "adset"
-										}) ? "lg-node--selected" : ""}`,
-										onClick: () => k({
+										}) ? "lg-block--selected" : ""}`,
+										onClick: () => A({
 											groupIndex: t,
 											adsetIndex: n,
 											level: "adset"
 										}),
 										children: [
 											/* @__PURE__ */ r("span", {
-												className: "lg-badge lg-badge-adset",
-												children: "Ad Set"
+												className: "lg-block-type",
+												children: "Adset"
 											}),
 											/* @__PURE__ */ i("span", {
-												className: "lg-node-id",
-												children: ["Template #", e.adset_template_id]
+												className: "lg-block-id",
+												children: ["#", e.adset_template_id]
 											}),
-											Object.keys(p.adsetValues[t]?.[n] || {}).filter((e) => p.adsetValues[t][n][e] !== "" && p.adsetValues[t][n][e] !== void 0).length > 0 && /* @__PURE__ */ r("span", { className: "lg-filled-indicator" })
+											p(m.adsetValues[t]?.[n] ?? {}) && /* @__PURE__ */ r("span", { className: "lg-filled-dot" })
 										]
-									}), /* @__PURE__ */ r("div", {
-										className: "lg-ads-list",
-										children: e.ad_templates.map((e, a) => /* @__PURE__ */ i("div", {
-											className: `lg-node lg-node-ad ${O({
-												groupIndex: t,
-												adsetIndex: n,
-												adIndex: a,
-												level: "ad"
-											}) ? "lg-node--selected" : ""}`,
-											onClick: () => k({
-												groupIndex: t,
-												adsetIndex: n,
-												adIndex: a,
-												level: "ad"
+									}, n))
+								}),
+								/* @__PURE__ */ r("div", {
+									className: "lg-conn",
+									children: /* @__PURE__ */ r("svg", {
+										className: "lg-conn-svg",
+										preserveAspectRatio: "none",
+										children: (() => {
+											let t = 0;
+											return e.adset_templates.map((e, i) => {
+												let o = a === 1 ? 50 : i / (a - 1) * 100;
+												return e.ad_templates.map((e, a) => {
+													let s = n === 1 ? 50 : t / (n - 1) * 100;
+													return t++, /* @__PURE__ */ r("line", {
+														className: "lg-conn-line",
+														x1: "0",
+														y1: `${o}%`,
+														x2: "100%",
+														y2: `${s}%`
+													}, `${i}-${a}`);
+												});
+											});
+										})()
+									})
+								}),
+								/* @__PURE__ */ r("div", {
+									className: "lg-col",
+									children: e.adset_templates.map((e, n) => e.ad_templates.map((e, a) => /* @__PURE__ */ i("div", {
+										className: `lg-block lg-block-ad ${k({
+											groupIndex: t,
+											adsetIndex: n,
+											adIndex: a,
+											level: "ad"
+										}) ? "lg-block--selected" : ""}`,
+										onClick: () => A({
+											groupIndex: t,
+											adsetIndex: n,
+											adIndex: a,
+											level: "ad"
+										}),
+										children: [
+											/* @__PURE__ */ r("span", {
+												className: "lg-block-type",
+												children: "Ad"
 											}),
-											children: [
-												/* @__PURE__ */ r("span", {
-													className: "lg-badge lg-badge-ad",
-													children: "Ad"
-												}),
-												/* @__PURE__ */ i("span", {
-													className: "lg-node-id",
-													children: ["Template #", e.ad_template_id]
-												}),
-												Object.keys(p.adValues[t]?.[n]?.[a] || {}).filter((e) => p.adValues[t][n][a][e] !== "" && p.adValues[t][n][a][e] !== void 0).length > 0 && /* @__PURE__ */ r("span", { className: "lg-filled-indicator" })
-											]
-										}, a))
-									})]
-								}, n))
-							})
-						]
-					}, t))
-				}), /* @__PURE__ */ i("div", {
-					className: "lg-form-panel",
-					children: [
-						x.length === 0 && /* @__PURE__ */ r("div", {
-							className: "lg-placeholder",
-							children: "Select one or more nodes to edit their parameters"
-						}),
-						x.length > 0 && !M && /* @__PURE__ */ r("div", {
-							className: "lg-placeholder",
-							children: "Select nodes of the same level to bulk edit"
-						}),
-						M && N.length > 0 && /* @__PURE__ */ i("div", {
-							className: "lg-form",
-							children: [/* @__PURE__ */ i("div", {
-								className: "lg-form-header",
-								children: [
-									"Editing ",
-									x.length,
-									" ",
-									M,
-									"(s)"
-								]
-							}), /* @__PURE__ */ r("div", {
-								className: "lg-form-fields",
-								children: N.map((e) => {
-									let t = F[e.name] ?? "", n = d(e, P, F, I);
-									return /* @__PURE__ */ i("div", {
-										className: "lg-field",
-										children: [/* @__PURE__ */ i("label", {
-											className: "lg-label",
-											children: [
-												e.label,
-												e.is_required && /* @__PURE__ */ r("span", {
-													className: "lg-required",
-													children: "*"
-												}),
-												e.depend_on && /* @__PURE__ */ i("span", {
-													className: "lg-depend-tag",
-													children: ["depends on: ", e.depend_on]
-												})
-											]
-										}), e.value_type === "BOOLEAN" ? /* @__PURE__ */ i("label", {
-											className: "lg-checkbox-label",
-											children: [/* @__PURE__ */ r("input", {
-												type: "checkbox",
-												checked: !!t,
-												onChange: (t) => j(e.name, t.target.checked)
-											}), /* @__PURE__ */ r("span", { children: e.label })]
-										}) : e.value_type === "DATETIME" ? /* @__PURE__ */ r("input", {
-											type: "datetime-local",
-											className: "lg-input",
-											value: String(t || ""),
-											onChange: (t) => j(e.name, t.target.value)
-										}) : e.value_type === "ARRAY" && n.length > 0 ? /* @__PURE__ */ r("div", {
-											className: "lg-chips",
-											children: n.map((n) => {
-												let i = typeof n.value == "object" ? String(u(n.value)) : String(n.value), a = Array.isArray(t) ? t : [], o = a.map(String).includes(i);
-												return /* @__PURE__ */ r("button", {
-													type: "button",
-													className: `lg-chip ${o ? "lg-chip--selected" : ""}`,
-													onClick: () => {
-														let t = o ? a.filter((e) => String(e) !== i) : [...a, n.value];
-														j(e.name, t);
-													},
-													children: n.label
-												}, i);
-											})
-										}) : n.length > 0 ? /* @__PURE__ */ i("select", {
-											className: "lg-select",
-											value: String(t ?? ""),
-											onChange: (t) => j(e.name, t.target.value),
-											children: [/* @__PURE__ */ r("option", {
-												value: "",
-												children: "— Select —"
-											}), n.map((e) => {
-												let t = typeof e.value == "object" ? String(u(e.value)) : String(e.value ?? "");
-												return /* @__PURE__ */ r("option", {
-													value: t,
-													children: e.label
-												}, t);
-											})]
-										}) : e.options && e.depend_on ? /* @__PURE__ */ r("select", {
-											className: "lg-select",
-											disabled: !0,
-											children: /* @__PURE__ */ r("option", { children: "— Select parent first —" })
-										}) : /* @__PURE__ */ r("input", {
-											type: [
-												"INTEGER",
-												"BIGINT",
-												"FLOAT",
-												"DOUBLE PRECISION"
-											].includes(e.value_type) ? "number" : "text",
-											className: "lg-input",
-											value: String(t ?? ""),
-											onChange: (t) => j(e.name, t.target.value),
-											placeholder: e.label
-										})]
-									}, e.name);
+											/* @__PURE__ */ i("span", {
+												className: "lg-block-id",
+												children: ["#", e.ad_template_id]
+											}),
+											p(m.adValues[t]?.[n]?.[a] ?? {}) && /* @__PURE__ */ r("span", { className: "lg-filled-dot" })
+										]
+									}, `${n}-${a}`)))
 								})
-							})]
-						})
-					]
-				})]
-			}),
-			/* @__PURE__ */ r("button", {
-				className: "lg-save-btn",
-				onClick: async () => {
-					if (p) {
-						E(!0);
-						try {
-							await l(p.groups.map((e, t) => ({
-								templates_group_name: e.templates_group_name,
-								campaign_template_id: e.campaign_template_id,
-								...p.campaignValues[t],
-								adset_templates: e.adset_templates.map((e, n) => ({
-									adset_template_id: e.adset_template_id,
-									...p.adsetValues[t][n],
-									ad_templates: e.ad_templates.map((e, r) => ({
-										ad_template_id: e.ad_template_id,
-										...p.adValues[t][n][r]
-									}))
-								}))
-							})));
-						} finally {
-							E(!1);
-						}
-					}
-				},
-				disabled: T,
-				children: T ? "Saving..." : "Save All Launch Groups"
+							]
+						})]
+					}, t);
+				})
 			})
 		]
 	}) : /* @__PURE__ */ r("div", {
 		className: "lg-container",
 		children: /* @__PURE__ */ r("button", {
 			className: "lg-load-btn",
-			onClick: D,
-			disabled: C,
-			children: C ? "Loading..." : "Load Launch Data"
+			onClick: O,
+			disabled: w,
+			children: w ? "Loading..." : "Load Launch Data"
 		})
 	});
 }
 //#endregion
-export { c as DynamicForm, p as LaunchGroup, l as TemplateGroup };
+export { c as DynamicForm, m as LaunchGroup, l as TemplateGroup };
