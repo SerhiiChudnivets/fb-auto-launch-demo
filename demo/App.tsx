@@ -3,7 +3,7 @@ import { DynamicForm, TemplateGroup, LaunchGroup } from '../src';
 import type { TemplateSave, TemplateGroupSave, LaunchGroupSave, FormField, TemplateInfo } from '../src';
 import './App.css';
 
-const API = 'http://localhost:3001/api';
+const API = '/api';
 
 async function api<T>(path: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${API}${path}`, {
