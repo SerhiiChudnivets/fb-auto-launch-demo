@@ -3,7 +3,7 @@ name: Deploy fb-auto-launch-demo
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
