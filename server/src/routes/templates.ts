@@ -1,5 +1,12 @@
 import { Router } from 'express';
-import db from '../db.js';
+import { readJson, writeJson, getNextId } from '../json-store.js';
+
+interface TemplateRecord {
+  id: number;
+  name: string;
+  description: string;
+  values_json: { name: string; value: unknown }[];
+}
 
 const router = Router();
 
@@ -9,20 +16,13 @@ function isValidLevel(level: string): level is (typeof VALID_LEVELS)[number] {
   return (VALID_LEVELS as readonly string[]).includes(level);
 }
 
-function withLevelId(rows: { id: number; name: string; description: string }[]) {
-  return rows.map((row, idx) => ({ ...row, id: idx + 1 }));
-}
-
 router.get('/', (_req, res) => {
-  const campaign_templates = withLevelId(db.prepare(
-    "SELECT id, name, description FROM templates WHERE level = 'campaign' ORDER BY id",
-  ).all() as { id: number; name: string; description: string }[]);
-  const adset_templates = withLevelId(db.prepare(
-    "SELECT id, name, description FROM templates WHERE level = 'adset' ORDER BY id",
-  ).all() as { id: number; name: string; description: string }[]);
-  const ad_templates = withLevelId(db.prepare(
-    "SELECT id, name, description FROM templates WHERE level = 'ad' ORDER BY id",
-  ).all() as { id: number; name: string; description: string }[]);
+  const campaign_templates = readJson<TemplateRecord[]>('templates/campaign.json')
+    .map(({ id, name, description }) => ({ id, name, description }));
+  const adset_templates = readJson<TemplateRecord[]>('templates/adset.json')
+    .map(({ id, name, description }) => ({ id, name, description }));
+  const ad_templates = readJson<TemplateRecord[]>('templates/ad.json')
+    .map(({ id, name, description }) => ({ id, name, description }));
 
   res.json({ campaign_templates, adset_templates, ad_templates });
 });
@@ -33,9 +33,11 @@ router.get('/:level', (req, res) => {
     res.status(400).json({ error: `Invalid level: ${level}` });
     return;
   }
-  const rows = db.prepare(
-    'SELECT id, name, description, values_json FROM templates WHERE level = ? ORDER BY id',
-  ).all(level);
+  const templates = readJson<TemplateRecord[]>(`templates/${level}.json`);
+  const rows = templates.map((t) => ({
+    ...t,
+    values_json: JSON.stringify(t.values_json),
+  }));
   res.json(rows);
 });
 
@@ -52,20 +54,19 @@ router.post('/:level', (req, res) => {
     return;
   }
 
+  const filePath = `templates/${level}.json`;
+  const templates = readJson<TemplateRecord[]>(filePath);
+
   const nameField = values.find((v: { name: string }) => v.name === 'template_name');
   const name = nameField?.value ?? `${level}_template`;
   const description = `${level} template`;
+  const id = getNextId(templates);
 
-  const result = db.prepare(
-    'INSERT INTO templates (level, name, description, values_json) VALUES (?, ?, ?, ?)',
-  ).run(level, name, description, JSON.stringify(values));
+  const newTemplate: TemplateRecord = { id, name, description, values_json: values };
+  templates.push(newTemplate);
+  writeJson(filePath, templates);
 
-  res.status(201).json({
-    id: result.lastInsertRowid,
-    name,
-    description,
-    level,
-  });
+  res.status(201).json({ id, name, description, level });
 });
 
 export default router;

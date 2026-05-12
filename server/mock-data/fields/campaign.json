@@ -1,0 +1,46 @@
+[
+  {
+    "name": "template_name",
+    "label": "Template Name",
+    "value_type": "VARCHAR",
+    "is_required": true
+  },
+  {
+    "name": "campaign_status",
+    "label": "Campaign Status",
+    "value_type": "VARCHAR",
+    "is_required": true,
+    "options": [
+      { "label": "Active", "value": "ACTIVE" },
+      { "label": "Pause", "value": "PAUSED" }
+    ]
+  },
+  {
+    "name": "campaign_bid_strategy",
+    "label": "Bid Strategy",
+    "value_type": "VARCHAR",
+    "is_required": true,
+    "options": [
+      { "label": "Lowest Cost (Auto)", "value": "LOWEST_COST_WITHOUT_CAP" },
+      { "label": "Lowest Cost (Bid Cap)", "value": "LOWEST_COST_WITH_BID_CAP" },
+      { "label": "Cost Cap", "value": "COST_CAP" },
+      { "label": "Min ROAS", "value": "LOWEST_COST_WITH_MIN_ROAS" }
+    ]
+  },
+  {
+    "name": "campaign_daily_budget",
+    "label": "Daily Budget",
+    "value_type": "INTEGER",
+    "is_required": false
+  },
+  {
+    "name": "campaign_objective",
+    "label": "Campaign Objective",
+    "value_type": "VARCHAR",
+    "is_required": true,
+    "options": [
+      { "label": "Sales", "value": "OUTCOME_SALES" },
+      { "label": "App Promotions", "value": "OUTCOME_APP_PROMOTION" }
+    ]
+  }
+]

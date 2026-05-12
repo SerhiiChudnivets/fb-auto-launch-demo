@@ -1,0 +1,142 @@
+[
+  {
+    "name": "adset_bid_amount",
+    "label": "Bid Amount",
+    "value_type": "INTEGER",
+    "is_required": false
+  },
+  {
+    "name": "adset_destination_type",
+    "label": "Destination Type",
+    "value_type": "VARCHAR",
+    "is_required": true,
+    "options": [
+      { "label": "Website", "value": "WEBSITE" },
+      { "label": "App", "value": "APP" }
+    ]
+  },
+  {
+    "name": "adset_attribution_spec_click_days",
+    "label": "Attribution Click Days",
+    "value_type": "INTEGER",
+    "is_required": false,
+    "options": [
+      { "label": "7 days", "value": 7 },
+      { "label": "1 day", "value": 1 }
+    ]
+  },
+  {
+    "name": "adset_daily_budget",
+    "label": "Daily Budget",
+    "value_type": "INTEGER",
+    "is_required": false
+  },
+  {
+    "name": "adset_status",
+    "label": "Ad Set Status",
+    "value_type": "VARCHAR",
+    "is_required": true,
+    "options": [
+      { "label": "Active", "value": "ACTIVE" },
+      { "label": "Paused", "value": "PAUSED" }
+    ]
+  },
+  {
+    "name": "adset_user_os",
+    "label": "User OS",
+    "value_type": "VARCHAR",
+    "is_required": true,
+    "options": [
+      { "label": "iOS", "value": "iOS" },
+      { "label": "Android", "value": "Android" },
+      { "label": "Android 4.2 and above", "value": "Android_ver_4.2_and_above" },
+      { "label": "iOS 15.0 and above", "value": "iOS_ver_15.0_and_above" },
+      { "label": "iOS + Android", "value": "iOS,Android" }
+    ]
+  },
+  {
+    "name": "adset_device_platforms",
+    "label": "Device Platforms",
+    "value_type": "ARRAY",
+    "is_required": false,
+    "options": [
+      { "label": "Mobile", "value": "mobile" },
+      { "label": "Desktop", "value": "desktop" }
+    ]
+  },
+  {
+    "name": "adset_user_device",
+    "label": "User Device",
+    "value_type": "VARCHAR",
+    "is_required": false
+  },
+  {
+    "name": "adset_countries",
+    "label": "Target Countries",
+    "value_type": "ARRAY",
+    "is_required": true,
+    "options": [
+      { "label": "GB", "value": "GB" },
+      { "label": "NL", "value": "NL" },
+      { "label": "AU", "value": "AU" },
+      { "label": "CA", "value": "CA" },
+      { "label": "FR", "value": "FR" },
+      { "label": "AR", "value": "AR" },
+      { "label": "CL", "value": "CL" }
+    ]
+  },
+  {
+    "name": "adset_locales",
+    "label": "Locales",
+    "value_type": "VARCHAR",
+    "is_required": false
+  },
+  {
+    "name": "adset_age_min",
+    "label": "Minimum Age",
+    "value_type": "INTEGER",
+    "is_required": true
+  },
+  {
+    "name": "adset_age_max",
+    "label": "Maximum Age",
+    "value_type": "INTEGER",
+    "is_required": true
+  },
+  {
+    "name": "adset_genders",
+    "label": "Genders",
+    "value_type": "VARCHAR",
+    "is_required": true,
+    "options": [
+      { "label": "All", "value": null },
+      { "label": "Male", "value": "[1]" },
+      { "label": "Female", "value": "[2]" }
+    ]
+  },
+  {
+    "name": "adset_benif_and_payor",
+    "label": "Beneficiary & Payor",
+    "value_type": "VARCHAR",
+    "is_required": false
+  },
+  {
+    "name": "adset_publisher_platforms",
+    "label": "Publisher Platforms",
+    "value_type": "ARRAY",
+    "is_required": false,
+    "options": [
+      { "label": "Facebook", "value": "facebook" },
+      { "label": "Instagram", "value": "instagram" },
+      { "label": "Audience Network", "value": "audience_network" },
+      { "label": "Messenger", "value": "messenger" },
+      { "label": "Threads", "value": "threads" }
+    ]
+  },
+  {
+    "name": "adset_is_flexiable",
+    "label": "Is Flexible Schedule",
+    "value_type": "BOOLEAN",
+    "is_required": true
+  }
+]

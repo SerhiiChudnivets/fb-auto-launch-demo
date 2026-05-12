@@ -1,20 +1,17 @@
 import { Router } from 'express';
-import { campaignFields, adsetFields, adFields } from '../seed.js';
+import { readJson } from '../json-store.js';
 
 const router = Router();
 
-const fieldMap: Record<string, typeof campaignFields> = {
-  campaign: campaignFields,
-  adset: adsetFields,
-  ad: adFields,
-};
+const VALID_LEVELS = ['campaign', 'adset', 'ad'] as const;
 
 router.get('/:level', (req, res) => {
-  const fields = fieldMap[req.params.level];
-  if (!fields) {
-    res.status(400).json({ error: `Invalid level: ${req.params.level}. Use campaign, adset, or ad.` });
+  const { level } = req.params;
+  if (!(VALID_LEVELS as readonly string[]).includes(level)) {
+    res.status(400).json({ error: `Invalid level: ${level}. Use campaign, adset, or ad.` });
     return;
   }
+  const fields = readJson(`fields/${level}.json`);
   res.json(fields);
 });
 

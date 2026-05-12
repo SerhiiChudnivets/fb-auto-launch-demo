@@ -1,0 +1,153 @@
+[
+  {
+    "id": 1,
+    "name": "Adset US Mobile",
+    "description": "US targeting, mobile only",
+    "values_json": [
+      {
+        "name": "adset_destination_type",
+        "value": "APP"
+      },
+      {
+        "name": "adset_status",
+        "value": "ACTIVE"
+      },
+      {
+        "name": "adset_user_os",
+        "value": "iOS"
+      },
+      {
+        "name": "adset_countries",
+        "value": [
+          "US"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Adset EU Desktop",
+    "description": "EU targeting, desktop",
+    "values_json": [
+      {
+        "name": "adset_destination_type",
+        "value": "WEBSITE"
+      },
+      {
+        "name": "adset_status",
+        "value": "ACTIVE"
+      },
+      {
+        "name": "adset_user_os",
+        "value": "Android"
+      },
+      {
+        "name": "adset_countries",
+        "value": [
+          "GB",
+          "FR",
+          "NL"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Adset Global",
+    "description": "Global targeting, all devices",
+    "values_json": [
+      {
+        "name": "adset_destination_type",
+        "value": "WEBSITE"
+      },
+      {
+        "name": "adset_status",
+        "value": "ACTIVE"
+      },
+      {
+        "name": "adset_user_os",
+        "value": "iOS,Android"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "adset_template",
+    "description": "adset template",
+    "values_json": [
+      {
+        "name": "adset_bid_amount",
+        "value": 132
+      },
+      {
+        "name": "adset_destination_type",
+        "value": "WEBSITE"
+      },
+      {
+        "name": "adset_attribution_spec_click_days",
+        "value": "7"
+      },
+      {
+        "name": "adset_daily_budget",
+        "value": 122229
+      },
+      {
+        "name": "adset_status",
+        "value": "ACTIVE"
+      },
+      {
+        "name": "adset_user_os",
+        "value": "Android"
+      },
+      {
+        "name": "adset_device_platforms",
+        "value": [
+          "mobile",
+          "desktop"
+        ]
+      },
+      {
+        "name": "adset_user_device",
+        "value": ""
+      },
+      {
+        "name": "adset_countries",
+        "value": [
+          "GB",
+          "AU"
+        ]
+      },
+      {
+        "name": "adset_locales",
+        "value": "en"
+      },
+      {
+        "name": "adset_age_min",
+        "value": 19
+      },
+      {
+        "name": "adset_age_max",
+        "value": 22
+      },
+      {
+        "name": "adset_genders",
+        "value": "null"
+      },
+      {
+        "name": "adset_benif_and_payor",
+        "value": ""
+      },
+      {
+        "name": "adset_publisher_platforms",
+        "value": [
+          "facebook",
+          "instagram"
+        ]
+      },
+      {
+        "name": "adset_is_flexiable",
+        "value": true
+      }
+    ]
+  }
+]

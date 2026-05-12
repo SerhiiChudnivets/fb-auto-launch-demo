@@ -1,0 +1,27 @@
+[
+  {
+    "name": "ad_status",
+    "label": "Ad Status",
+    "value_type": "VARCHAR",
+    "is_required": true,
+    "options": [
+      { "label": "Active", "value": "ACTIVE" },
+      { "label": "Paused", "value": "PAUSED" }
+    ]
+  },
+  {
+    "name": "ad_button",
+    "label": "Call To Action Button",
+    "value_type": "VARCHAR",
+    "is_required": true,
+    "options": [
+      { "label": "Play Game", "value": "PLAY_GAME" },
+      { "label": "Learn More", "value": "LEARN_MORE" },
+      { "label": "Sign Up", "value": "SIGN_UP" },
+      { "label": "Install App", "value": "INSTALL_APP" },
+      { "label": "Shop Now", "value": "SHOP_NOW" },
+      { "label": "Get Offer", "value": "GET_OFFER" },
+      { "label": "Contact Us", "value": "CONTACT_US" }
+    ]
+  }
+]

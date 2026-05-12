@@ -1,0 +1,75 @@
+[
+  {
+    "id": 1,
+    "name": "Campaign Alpha",
+    "description": "Sales campaign with lowest cost",
+    "values_json": [
+      {
+        "name": "template_name",
+        "value": "Campaign Alpha"
+      },
+      {
+        "name": "campaign_status",
+        "value": "ACTIVE"
+      },
+      {
+        "name": "campaign_bid_strategy",
+        "value": "LOWEST_COST_WITHOUT_CAP"
+      },
+      {
+        "name": "campaign_objective",
+        "value": "OUTCOME_SALES"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Campaign Beta",
+    "description": "App promo campaign with bid cap",
+    "values_json": [
+      {
+        "name": "template_name",
+        "value": "Campaign Beta"
+      },
+      {
+        "name": "campaign_status",
+        "value": "ACTIVE"
+      },
+      {
+        "name": "campaign_bid_strategy",
+        "value": "LOWEST_COST_WITH_BID_CAP"
+      },
+      {
+        "name": "campaign_objective",
+        "value": "OUTCOME_APP_PROMOTION"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "name",
+    "description": "campaign template",
+    "values_json": [
+      {
+        "name": "template_name",
+        "value": "name"
+      },
+      {
+        "name": "campaign_status",
+        "value": "ACTIVE"
+      },
+      {
+        "name": "campaign_bid_strategy",
+        "value": "LOWEST_COST_WITHOUT_CAP"
+      },
+      {
+        "name": "campaign_daily_budget",
+        "value": 113
+      },
+      {
+        "name": "campaign_objective",
+        "value": "OUTCOME_SALES"
+      }
+    ]
+  }
+]

@@ -1,30 +1,29 @@
 import { Router } from 'express';
-import db from '../db.js';
-import { campaignLaunchFields, adsetLaunchFields, adLaunchFields } from '../seed.js';
+import { readJson, writeJson, getNextId } from '../json-store.js';
+
+interface LaunchGroup {
+  id: number;
+  [key: string]: unknown;
+}
 
 const router = Router();
 
-const launchFieldMap: Record<string, typeof campaignLaunchFields> = {
-  campaign: campaignLaunchFields,
-  adset: adsetLaunchFields,
-  ad: adLaunchFields,
-};
+const VALID_LEVELS = ['campaign', 'adset', 'ad'] as const;
+const FILE = 'launch-groups.json';
 
 router.get('/fields/:level', (req, res) => {
-  const fields = launchFieldMap[req.params.level];
-  if (!fields) {
+  const { level } = req.params;
+  if (!(VALID_LEVELS as readonly string[]).includes(level)) {
     res.status(400).json({ error: `Invalid level: ${req.params.level}` });
     return;
   }
+  const fields = readJson(`launch-fields/${level}.json`);
   res.json(fields);
 });
 
 router.get('/', (_req, res) => {
-  const rows = db.prepare('SELECT id, data_json FROM launch_groups ORDER BY id').all() as {
-    id: number;
-    data_json: string;
-  }[];
-  res.json(rows.map((r) => ({ id: r.id, ...JSON.parse(r.data_json) })));
+  const groups = readJson<LaunchGroup[]>(FILE);
+  res.json(groups);
 });
 
 router.post('/', (req, res) => {
@@ -34,17 +33,17 @@ router.post('/', (req, res) => {
     return;
   }
 
-  const insert = db.prepare('INSERT INTO launch_groups (data_json) VALUES (?)');
-  const tx = db.transaction((groups: unknown[]) => {
-    const ids: number[] = [];
-    for (const group of groups) {
-      const result = insert.run(JSON.stringify(group));
-      ids.push(result.lastInsertRowid as number);
-    }
-    return ids;
-  });
+  const groups = readJson<LaunchGroup[]>(FILE);
+  const ids: number[] = [];
 
-  const ids = tx(body);
+  for (const group of body) {
+    const id = getNextId(groups);
+    const newGroup = { id, ...group };
+    groups.push(newGroup);
+    ids.push(id);
+  }
+
+  writeJson(FILE, groups);
   res.status(201).json({ ids, count: ids.length });
 });
 

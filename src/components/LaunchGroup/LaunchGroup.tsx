@@ -84,6 +84,12 @@ function hasFilled(vals: NodeValues): boolean {
   return Object.values(vals).some((v) => v !== '' && v !== undefined && v !== null);
 }
 
+function getNodeY(index: number, total: number): number {
+  if (total <= 1) return 50;
+  const pad = 10;
+  return pad + (index / (total - 1)) * (100 - 2 * pad);
+}
+
 export function LaunchGroup({
   fetchTemplateGroups,
   fetchCampaignFields,
@@ -370,17 +376,23 @@ export function LaunchGroup({
 
       <div className="lg-groups-list">
         {launchState.groups.map((group, gi) => {
-          const totalAds = group.adset_templates.reduce((sum, as) => sum + as.ad_templates.length, 0);
           const adsetCount = group.adset_templates.length;
+          const totalAds = group.adset_templates.reduce((sum, as) => sum + as.ad_templates.length, 0);
+          const maxItems = Math.max(1, adsetCount, totalAds);
+          const graphMinHeight = maxItems * 56;
+
+          let adGlobalBlock = 0;
+          let adGlobalLine = 0;
 
           return (
             <div key={gi} className="lg-group-block">
               <div className="lg-group-label">{group.templates_group_name}</div>
-              <div className="lg-graph">
+              <div className="lg-graph" style={{ minHeight: graphMinHeight }}>
                 {/* Campaign */}
-                <div className="lg-col">
+                <div className="lg-col-abs">
                   <div
                     className={`lg-block lg-block-campaign ${isNodeSelected({ groupIndex: gi, level: 'campaign' }) ? 'lg-block--selected' : ''}`}
+                    style={{ top: '50%' }}
                     onClick={() => toggleNodeSelection({ groupIndex: gi, level: 'campaign' })}
                   >
                     <span className="lg-block-type">Campaign</span>
@@ -395,18 +407,19 @@ export function LaunchGroup({
                     {group.adset_templates.map((_, asi) => (
                       <line key={asi} className="lg-conn-line"
                         x1="0" y1="50%"
-                        x2="100%" y2={`${adsetCount === 1 ? 50 : (asi / (adsetCount - 1)) * 100}%`}
+                        x2="100%" y2={`${getNodeY(asi, adsetCount)}%`}
                       />
                     ))}
                   </svg>
                 </div>
 
                 {/* Adsets */}
-                <div className="lg-col">
+                <div className="lg-col-abs">
                   {group.adset_templates.map((adset, asi) => (
                     <div
                       key={asi}
                       className={`lg-block lg-block-adset ${isNodeSelected({ groupIndex: gi, adsetIndex: asi, level: 'adset' }) ? 'lg-block--selected' : ''}`}
+                      style={{ top: `${getNodeY(asi, adsetCount)}%` }}
                       onClick={() => toggleNodeSelection({ groupIndex: gi, adsetIndex: asi, level: 'adset' })}
                     >
                       <span className="lg-block-type">Adset</span>
@@ -419,34 +432,36 @@ export function LaunchGroup({
                 {/* Connector AS → AD */}
                 <div className="lg-conn">
                   <svg className="lg-conn-svg" preserveAspectRatio="none">
-                    {(() => {
-                      let adGlobal = 0;
-                      return group.adset_templates.map((adset, asi) => {
-                        const asY = adsetCount === 1 ? 50 : (asi / (adsetCount - 1)) * 100;
-                        return adset.ad_templates.map((_, adi) => {
-                          const adY = totalAds === 1 ? 50 : (adGlobal / (totalAds - 1)) * 100;
-                          adGlobal++;
-                          return <line key={`${asi}-${adi}`} className="lg-conn-line" x1="0" y1={`${asY}%`} x2="100%" y2={`${adY}%`} />;
-                        });
-                      });
-                    })()}
+                    {group.adset_templates.map((adset, asi) =>
+                      adset.ad_templates.map((_, adi) => {
+                        const asY = getNodeY(asi, adsetCount);
+                        const adY = getNodeY(adGlobalLine, totalAds);
+                        adGlobalLine++;
+                        return <line key={`${asi}-${adi}`} className="lg-conn-line" x1="0" y1={`${asY}%`} x2="100%" y2={`${adY}%`} />;
+                      })
+                    )}
                   </svg>
                 </div>
 
                 {/* Ads */}
-                <div className="lg-col">
+                <div className="lg-col-abs">
                   {group.adset_templates.map((adset, asi) =>
-                    adset.ad_templates.map((ad, adi) => (
-                      <div
-                        key={`${asi}-${adi}`}
-                        className={`lg-block lg-block-ad ${isNodeSelected({ groupIndex: gi, adsetIndex: asi, adIndex: adi, level: 'ad' }) ? 'lg-block--selected' : ''}`}
-                        onClick={() => toggleNodeSelection({ groupIndex: gi, adsetIndex: asi, adIndex: adi, level: 'ad' })}
-                      >
-                        <span className="lg-block-type">Ad</span>
-                        <span className="lg-block-id">#{ad.ad_template_id}</span>
-                        {hasFilled(launchState.adValues[gi]?.[asi]?.[adi] ?? {}) && <span className="lg-filled-dot" />}
-                      </div>
-                    ))
+                    adset.ad_templates.map((ad, adi) => {
+                      const y = getNodeY(adGlobalBlock, totalAds);
+                      adGlobalBlock++;
+                      return (
+                        <div
+                          key={`${asi}-${adi}`}
+                          className={`lg-block lg-block-ad ${isNodeSelected({ groupIndex: gi, adsetIndex: asi, adIndex: adi, level: 'ad' }) ? 'lg-block--selected' : ''}`}
+                          style={{ top: `${y}%` }}
+                          onClick={() => toggleNodeSelection({ groupIndex: gi, adsetIndex: asi, adIndex: adi, level: 'ad' })}
+                        >
+                          <span className="lg-block-type">Ad</span>
+                          <span className="lg-block-id">#{ad.ad_template_id}</span>
+                          {hasFilled(launchState.adValues[gi]?.[asi]?.[adi] ?? {}) && <span className="lg-filled-dot" />}
+                        </div>
+                      );
+                    })
                   )}
                 </div>
               </div>

@@ -1,17 +1,17 @@
 .tg-container {
-  background: #1a1a2e;
-  border: 1px solid #2d2d44;
+  background: #1a1a1a;
+  border: 1px solid #fff;
   border-radius: 12px;
   padding: 24px;
 }
 
 .tg-title {
-  color: #e0e0e0;
+  color: #fff;
   font-size: 18px;
   font-weight: 600;
   margin: 0 0 20px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #2d2d44;
+  border-bottom: 1px solid #444;
 }
 
 .tg-controls {
@@ -28,21 +28,21 @@
 }
 
 .tg-label {
-  color: #a0a0b8;
+  color: #ccc;
   font-size: 13px;
   font-weight: 500;
 }
 
 .tg-required {
-  color: #ff6b6b;
+  color: #fff;
 }
 
 .tg-input,
 .tg-select {
-  background: #16162a;
-  border: 1px solid #2d2d44;
+  background: #111;
+  border: 1px solid #666;
   border-radius: 8px;
-  color: #e0e0e0;
+  color: #fff;
   padding: 10px 12px;
   font-size: 14px;
   outline: none;
@@ -51,24 +51,24 @@
 
 .tg-input:focus,
 .tg-select:focus {
-  border-color: #6c63ff;
+  border-color: #fff;
 }
 
 .tg-select option {
-  background: #16162a;
-  color: #e0e0e0;
+  background: #111;
+  color: #fff;
 }
 
 .tg-error {
-  color: #ff6b6b;
+  color: #999;
   font-size: 12px;
 }
 
 /* ==================== Graph layout ==================== */
 
 .tg-graph-area {
-  background: #12122a;
-  border: 1px solid #2d2d44;
+  background: #111;
+  border: 1px solid #444;
   border-radius: 10px;
   padding: 24px 16px;
   overflow-x: auto;
@@ -109,32 +109,32 @@
 }
 
 .tg-block-campaign {
-  background: #d0def5;
-  border-color: #8aaed4;
+  background: #333;
+  border-color: #888;
 }
 
 .tg-block-adset {
-  background: #f5dcc0;
-  border-color: #d4a86a;
+  background: #2a2a2a;
+  border-color: #777;
 }
 
 .tg-block-ad {
-  background: #fdf3c7;
-  border-color: #e0cc6e;
+  background: #222;
+  border-color: #666;
 }
 
 .tg-block-label {
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  color: #444;
+  color: #fff;
   margin-bottom: 4px;
 }
 
 .tg-block-name {
   font-size: 13px;
   font-weight: 600;
-  color: #222;
+  color: #ccc;
 }
 
 .tg-block-header {
@@ -147,7 +147,7 @@
 .tg-block-remove {
   background: transparent;
   border: none;
-  color: #c0392b;
+  color: #999;
   font-size: 14px;
   cursor: pointer;
   padding: 0 2px;
@@ -158,13 +158,14 @@
 
 .tg-block-remove:hover {
   opacity: 1;
+  color: #fff;
 }
 
 .tg-block-select {
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: #111;
+  border: 1px solid #666;
   border-radius: 4px;
-  color: #222;
+  color: #fff;
   padding: 4px 6px;
   font-size: 12px;
   width: 100%;
@@ -187,7 +188,7 @@
 }
 
 .tg-connector-line {
-  stroke: #555;
+  stroke: #666;
   stroke-width: 2;
   fill: none;
 }
@@ -196,9 +197,9 @@
 
 .tg-add-node-btn {
   background: transparent;
-  border: 2px dashed #4a4a5e;
+  border: 2px dashed #666;
   border-radius: 8px;
-  color: #6c63ff;
+  color: #ccc;
   padding: 8px 14px;
   font-size: 13px;
   font-weight: 500;
@@ -208,8 +209,9 @@
 }
 
 .tg-add-node-btn:hover {
-  border-color: #6c63ff;
-  background: rgba(108, 99, 255, 0.1);
+  border-color: #fff;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .tg-add-node-btn--small {
@@ -227,8 +229,8 @@
 
 .tg-load-btn,
 .tg-save-btn {
-  background: #6c63ff;
-  color: #fff;
+  background: #fff;
+  color: #111;
   border: none;
   border-radius: 8px;
   padding: 12px 32px;
@@ -242,7 +244,7 @@
 
 .tg-load-btn:hover:not(:disabled),
 .tg-save-btn:hover:not(:disabled) {
-  background: #5a52e0;
+  background: #ccc;
 }
 
 .tg-load-btn:disabled,

@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "name": "Ad Play Game",
+    "description": "Play Game CTA, active",
+    "values_json": [
+      {
+        "name": "ad_status",
+        "value": "ACTIVE"
+      },
+      {
+        "name": "ad_button",
+        "value": "PLAY_GAME"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Ad Learn More",
+    "description": "Learn More CTA, active",
+    "values_json": [
+      {
+        "name": "ad_status",
+        "value": "ACTIVE"
+      },
+      {
+        "name": "ad_button",
+        "value": "LEARN_MORE"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Ad Install App",
+    "description": "Install App CTA, paused",
+    "values_json": [
+      {
+        "name": "ad_status",
+        "value": "PAUSED"
+      },
+      {
+        "name": "ad_button",
+        "value": "INSTALL_APP"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "ad_template",
+    "description": "ad template",
+    "values_json": [
+      {
+        "name": "ad_status",
+        "value": "ACTIVE"
+      },
+      {
+        "name": "ad_button",
+        "value": "LEARN_MORE"
+      }
+    ]
+  }
+]

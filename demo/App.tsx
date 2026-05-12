@@ -53,7 +53,7 @@ function App() {
     return f;
   };
 
-  const handleTemplateSave = async (level: string) => async (data: TemplateSave) => {
+  const handleTemplateSave = (level: string) => async (data: TemplateSave) => {
     await api(`/templates/${level}`, { method: 'POST', body: JSON.stringify(data) });
     alert('Template saved!');
   };

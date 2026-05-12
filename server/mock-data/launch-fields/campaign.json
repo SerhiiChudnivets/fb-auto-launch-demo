@@ -1,0 +1,23 @@
+[
+  {
+    "name": "soc_account",
+    "label": "Soc Account",
+    "value_type": "VARCHAR",
+    "is_required": true,
+    "options": [
+      { "label": "SOC1", "value": { "id": 1 } },
+      { "label": "SOC2", "value": { "id": 2 } }
+    ]
+  },
+  {
+    "name": "ad_account",
+    "label": "Account Id",
+    "depend_on": "soc_account",
+    "value_type": "VARCHAR",
+    "is_required": true,
+    "options": [
+      { "label": "SOC1 - AD_ACCOUNT_1", "value": { "id": 1, "soc_account_id": 1 } },
+      { "label": "SOC2 - AD_ACCOUNT_2", "value": { "id": 2, "soc_account_id": 2 } }
+    ]
+  }
+]

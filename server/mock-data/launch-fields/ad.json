@@ -1,0 +1,25 @@
+[
+  {
+    "name": "fp",
+    "label": "Fun Page",
+    "depend_on": "soc_account",
+    "value_type": "VARCHAR",
+    "is_required": true,
+    "options": [
+      { "label": "FP1 - 321211321", "value": { "id": 1, "soc_account_id": 1 } },
+      { "label": "FP2 - 42142124", "value": { "id": 2, "soc_account_id": 2 } }
+    ]
+  },
+  {
+    "name": "creative_url",
+    "label": "Creative URL",
+    "value_type": "VARCHAR",
+    "is_required": true
+  },
+  {
+    "name": "thumbnail_url",
+    "label": "Thumbnail URL",
+    "value_type": "VARCHAR",
+    "is_required": true
+  }
+]

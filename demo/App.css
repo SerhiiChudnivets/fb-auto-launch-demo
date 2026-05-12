@@ -1,6 +1,6 @@
 .app {
   min-height: 100vh;
-  background: #0f0f1a;
+  background: #0a0a0a;
   color: #e0e0e0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
@@ -26,7 +26,7 @@
   display: flex;
   gap: 4px;
   padding: 20px 40px 0;
-  border-bottom: 1px solid #2d2d44;
+  border-bottom: 1px solid #333;
 }
 
 .app-tab {
@@ -43,12 +43,12 @@
 }
 
 .app-tab:hover {
-  color: #a0a0b8;
+  color: #ccc;
 }
 
 .app-tab--active {
-  color: #6c63ff;
-  border-bottom-color: #6c63ff;
+  color: #fff;
+  border-bottom-color: #fff;
 }
 
 .app-content {

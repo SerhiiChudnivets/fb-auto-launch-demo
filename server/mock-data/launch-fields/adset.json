@@ -1,0 +1,19 @@
+[
+  {
+    "name": "pixel",
+    "label": "Pixel",
+    "depend_on": "ad_account",
+    "value_type": "VARCHAR",
+    "is_required": true,
+    "options": [
+      { "label": "Pixel 1 - 21421124211", "value": { "id": 1, "ad_account_ids": [1, 2, 3] } },
+      { "label": "Pixel 2 - 4214433331111", "value": { "id": 2, "ad_account_ids": [1, 2] } }
+    ]
+  },
+  {
+    "name": "launch_datetime",
+    "label": "Launch Datetime (by Account Timezone)",
+    "value_type": "DATETIME",
+    "is_required": true
+  }
+]

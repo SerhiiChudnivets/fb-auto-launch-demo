@@ -1,20 +1,19 @@
 import { Router } from 'express';
-import db from '../db.js';
+import { readJson, writeJson, getNextId } from '../json-store.js';
+
+interface TemplateGroup {
+  id: number;
+  templates_group_name: string;
+  campaign_template_id: number;
+  [key: string]: unknown;
+}
 
 const router = Router();
 
+const FILE = 'template-groups.json';
+
 router.get('/', (_req, res) => {
-  const rows = db.prepare('SELECT id, name, data_json FROM template_groups ORDER BY id').all() as {
-    id: number;
-    name: string;
-    data_json: string;
-  }[];
-
-  const groups = rows.map((row) => ({
-    id: row.id,
-    ...JSON.parse(row.data_json),
-  }));
-
+  const groups = readJson<TemplateGroup[]>(FILE);
   res.json(groups);
 });
 
@@ -25,11 +24,13 @@ router.post('/', (req, res) => {
     return;
   }
 
-  const result = db.prepare(
-    'INSERT INTO template_groups (name, data_json) VALUES (?, ?)',
-  ).run(body.templates_group_name, JSON.stringify(body));
+  const groups = readJson<TemplateGroup[]>(FILE);
+  const id = getNextId(groups);
+  const newGroup = { id, ...body };
+  groups.push(newGroup);
+  writeJson(FILE, groups);
 
-  res.status(201).json({ id: result.lastInsertRowid, ...body });
+  res.status(201).json(newGroup);
 });
 
 export default router;

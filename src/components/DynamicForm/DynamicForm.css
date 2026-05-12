@@ -1,18 +1,18 @@
 .df-container {
-  background: #1a1a2e;
-  border: 1px solid #2d2d44;
+  background: #1a1a1a;
+  border: 1px solid #fff;
   border-radius: 12px;
   padding: 24px;
   max-width: 600px;
 }
 
 .df-title {
-  color: #e0e0e0;
+  color: #fff;
   font-size: 18px;
   font-weight: 600;
   margin: 0 0 20px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #2d2d44;
+  border-bottom: 1px solid #444;
 }
 
 .df-fields {
@@ -28,22 +28,22 @@
 }
 
 .df-label {
-  color: #a0a0b8;
+  color: #ccc;
   font-size: 13px;
   font-weight: 500;
 }
 
 .df-required {
-  color: #ff6b6b;
+  color: #fff;
   margin-left: 3px;
 }
 
 .df-input,
 .df-select {
-  background: #16162a;
-  border: 1px solid #2d2d44;
+  background: #111;
+  border: 1px solid #666;
   border-radius: 8px;
-  color: #e0e0e0;
+  color: #fff;
   padding: 10px 12px;
   font-size: 14px;
   outline: none;
@@ -52,7 +52,7 @@
 
 .df-input:focus,
 .df-select:focus {
-  border-color: #6c63ff;
+  border-color: #fff;
 }
 
 .df-input::placeholder {
@@ -60,8 +60,8 @@
 }
 
 .df-select option {
-  background: #16162a;
-  color: #e0e0e0;
+  background: #111;
+  color: #fff;
 }
 
 .df-checkbox-label {
@@ -73,7 +73,7 @@
 }
 
 .df-checkbox-text {
-  color: #a0a0b8;
+  color: #ccc;
   font-size: 14px;
 }
 
@@ -84,10 +84,10 @@
 }
 
 .df-chip {
-  background: #16162a;
-  border: 1px solid #2d2d44;
+  background: #111;
+  border: 1px solid #666;
   border-radius: 20px;
-  color: #a0a0b8;
+  color: #ccc;
   padding: 6px 14px;
   font-size: 13px;
   cursor: pointer;
@@ -95,29 +95,29 @@
 }
 
 .df-chip:hover {
-  border-color: #6c63ff;
-  color: #e0e0e0;
-}
-
-.df-chip--selected {
-  background: #6c63ff;
-  border-color: #6c63ff;
+  border-color: #fff;
   color: #fff;
 }
 
+.df-chip--selected {
+  background: #fff;
+  border-color: #fff;
+  color: #111;
+}
+
 .df-chip--selected:hover {
-  background: #5a52e0;
+  background: #ccc;
 }
 
 .df-error {
-  color: #ff6b6b;
+  color: #999;
   font-size: 12px;
 }
 
 .df-save-btn {
   margin-top: 20px;
-  background: #6c63ff;
-  color: #fff;
+  background: #fff;
+  color: #111;
   border: none;
   border-radius: 8px;
   padding: 12px 32px;
@@ -129,7 +129,7 @@
 }
 
 .df-save-btn:hover:not(:disabled) {
-  background: #5a52e0;
+  background: #ccc;
 }
 
 .df-save-btn:disabled {

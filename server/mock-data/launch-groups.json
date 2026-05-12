@@ -1,0 +1,91 @@
+[
+  {
+    "id": 1,
+    "templates_group_name": "Group Alpha",
+    "campaign_template_id": 1,
+    "adset_templates": [
+      {
+        "adset_template_id": 1,
+        "ad_templates": [
+          {
+            "ad_template_id": 1
+          },
+          {
+            "ad_template_id": 2
+          }
+        ]
+      },
+      {
+        "adset_template_id": 2,
+        "ad_templates": [
+          {
+            "ad_template_id": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "templates_group_name": "Group Beta",
+    "campaign_template_id": 2,
+    "adset_templates": [
+      {
+        "adset_template_id": 1,
+        "ad_templates": [
+          {
+            "ad_template_id": 1
+          },
+          {
+            "ad_template_id": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "templates_group_name": "KKK",
+    "campaign_template_id": 3,
+    "adset_templates": [
+      {
+        "adset_template_id": 1,
+        "ad_templates": [
+          {
+            "ad_template_id": 1
+          },
+          {
+            "ad_template_id": 3
+          },
+          {
+            "ad_template_id": 2
+          }
+        ]
+      },
+      {
+        "adset_template_id": 2,
+        "ad_templates": [
+          {
+            "ad_template_id": 1
+          }
+        ]
+      },
+      {
+        "adset_template_id": 4,
+        "ad_templates": [
+          {
+            "ad_template_id": 1
+          }
+        ]
+      },
+      {
+        "adset_template_id": 3,
+        "ad_templates": [
+          {
+            "ad_template_id": 3
+          }
+        ]
+      }
+    ]
+  }
+]
